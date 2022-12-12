@@ -218,7 +218,6 @@ GameObject:
   - component: {fileID: 571349389}
   - component: {fileID: 571349388}
   - component: {fileID: 571349387}
-  - component: {fileID: 571349391}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -328,46 +327,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &571349391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571349386}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa0b9760baa4fe24f85405cc127f47bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  horizontalRayCount: 3
-  verticalRayCount: 3
-  canFall: 0
-  isJumping: 0
-  isDashing: 0
-  dashReady: 0
-  canOnlyDashOnGround: 0
-  overrideDashTime: 0
-  dashTime: 0
-  dashCooldown: 0
-  stopHorizontalMomentumOnRelease: 0
-  velocity: {x: 0, y: 0}
-  gravity: 0
-  maxFallSpeed: 8
-  maxHorizontalSpeed: 11
-  walkAcceleration: 1
-  groundDecelerationTime: 0
-  airDecelerationTime: 0
-  horizontalInput: 0
-  jumpHeight: 10
-  timeToMaxHeight: 0.6
-  jumpVelocity: 0
-  dashVelocity: 0
-  knockbackScalar: 0
-  knockbackDuration: 0
 --- !u!1 &2051440473
 GameObject:
   m_ObjectHideFlags: 0
