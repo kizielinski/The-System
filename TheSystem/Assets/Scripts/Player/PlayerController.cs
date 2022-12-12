@@ -14,17 +14,14 @@ public class PlayerController : MonoBehaviour
     // Reference to the box collider
     BoxCollider2D collisionBox;
 
-    // Input values
-    private Vector2 move; // Current move value
-    private Vector2 prevMove; // Previous move value
-
     // Movement Values
-    public float jumpSpeed;
-    public float moveSpeed;
-    public float gravity;
-    public float drag;
-    public float maxSpeed;
-    public float maxFallSpeed;
+    private float jumpSpeed;
+    private float moveSpeed;
+    private float gravity;
+    private float defaultGravity;
+    private float drag;
+    private float maxSpeed;
+    private float maxFallSpeed;
 
     // Player stats
     [SerializeField]
@@ -34,7 +31,8 @@ public class PlayerController : MonoBehaviour
     //Set values for player movement (these will change per character)
     private void Awake()
     {
-        gravity = -9.81f;
+        gravity = -15;
+        defaultGravity = -15;
         maxFallSpeed = -10f;
         jumpSpeed = 5.0f;
         moveSpeed = 3.0f;
@@ -51,62 +49,24 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         playerControls.Disable();
-
-        // Disabling the callback to not have leaks
-        //playerControls.BasicMovement.Move.performed -= Move;
-        playerControls.BasicMovement.Jump.performed -= Jump;
     }
 
     void Start()
     {
         collisionBox = GetComponent<BoxCollider2D>();
 
-        // Setting up variables
-        move = Vector2.zero;
-        prevMove = Vector2.zero;
-
         vel = Vector2.zero;
         pos = transform.position;
-
-        // Setting up callbacks for input
-        //playerControls.BasicMovement.Move.performed += Move;
-        //playerControls.BasicMovement.Move.started += Move;
-        playerControls.BasicMovement.Jump.performed += Jump;
     }
 
     private void FixedUpdate()
     {
         ApplyGravityAndDrag();
-        HorizontalMovement();
+        DetectInput();
         pos.y += vel.y * Time.deltaTime;
         pos.x += vel.x;
         transform.position = pos;
     }
-
-    /* Deprecated, couldn't find a way to have smooth movement work
-     * Also InputAction Callback is for single actions 
-     * (Attacking, interaction, spell, charging an attack or spell for different effects etc)
-     * */
-
-    //private void Move(InputAction.CallbackContext context)
-    //{
-    //    move.x = context.ReadValue<Vector2>().x;
-    //    if (move.x > 0.01f || move.x < -.01f)
-    //    {
-    //        vel.x += move.x * moveSpeed;
-    //        if (vel.x > maxSpeed)
-    //        {
-    //            vel.x = maxSpeed;
-    //        }
-    //        else if (vel.x < maxSpeed * -1)
-    //        {
-    //            vel.x = maxSpeed * -1;
-    //        }
-    //    }
-
-    //    Debug.Log("Move");
-    //    Debug.LogWarning(vel);
-    //}
 
     /// <summary>
     /// This function does basic horizontal movement separate from any characters or abilities
@@ -156,13 +116,18 @@ public class PlayerController : MonoBehaviour
     }
 
     //Would recommend reworking this into a KeyPress based function as well
-    private void Jump(InputAction.CallbackContext context)
+    private void Jump()
     {
-        if (IsGrounded())
+        if (IsGrounded() && Input.GetKey(KeyCode.Space))
         {
             vel.y += jumpSpeed;
         }
-        Debug.Log("Jump");
+    }
+
+    private void DetectInput()
+    {
+        HorizontalMovement();
+        Jump();
     }
 
     private bool IsGrounded()
@@ -228,7 +193,7 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.tag == "ground")
         {
-            gravity = -9.81f;
+            gravity = defaultGravity;
         }
     }
 }
