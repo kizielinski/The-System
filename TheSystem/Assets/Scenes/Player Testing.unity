@@ -219,9 +219,9 @@ GameObject:
   - component: {fileID: 1331955239}
   - component: {fileID: 1331955238}
   - component: {fileID: 1331955242}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -267,12 +267,6 @@ MonoBehaviour:
   platformLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  jumpSpeed: 10
-  moveSpeed: 0.1
-  gravity: 0.01
-  drag: 0
-  maxSpeed: 1
-  maxFallSpeed: -1
   vel: {x: 0, y: 0}
 --- !u!212 &1331955240
 SpriteRenderer:

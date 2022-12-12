@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Vector2 vel;
     private Vector2 pos;
+    private int health;
+    private int maxHealth;
 
     //Set values for player movement (these will change per character)
     private void Awake()
@@ -39,6 +41,9 @@ public class PlayerController : MonoBehaviour
         maxSpeed = 8.0f;
         drag = 0.7f;
         playerControls = new PlayerControls();
+
+        health = 3;
+        maxHealth = 3;
     }
 
     private void OnEnable()
@@ -194,6 +199,20 @@ public class PlayerController : MonoBehaviour
         if(collision.tag == "ground")
         {
             gravity = defaultGravity;
+        }
+    }
+
+    /// <summary>
+    /// Removes a health point from the player
+    /// if the player "dies" then it forces a jump
+    /// </summary>
+    private void TakeDamage()
+    {
+        health -= 1;
+        if(health <= 0)
+        {
+            Jump();
+            health = maxHealth;
         }
     }
 }
