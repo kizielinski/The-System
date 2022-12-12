@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
         vel.x = 0;
     }
 
-    //Would recommend reworking this into a KeyPress based function as well
+
     private void Jump()
     {
         if (IsGrounded() && Input.GetKey(KeyCode.Space))
@@ -158,12 +158,8 @@ public class PlayerController : MonoBehaviour
     
     private void ApplyGravityAndDrag()
     {
-        //if(IsGrounded())
-        //{
-        //    vel.y = 0;
-        //}
         vel.y += gravity * Time.deltaTime;
-        if(vel.y < maxFallSpeed)
+        if (vel.y < maxFallSpeed)
         {
             vel.y = maxFallSpeed;
         }
