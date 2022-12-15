@@ -13,7 +13,7 @@ public class Walker : MonoBehaviour
     private bool canMove;
 
     private BoxCollider2D collisionBox;
-    private CapsuleCollider2D attackRange;
+    private BoxCollider2D attackRange;
 
     private Vector2 pos;
 
@@ -21,8 +21,10 @@ public class Walker : MonoBehaviour
     {
         canMove = true;
 
-        collisionBox = GetComponent<BoxCollider2D>();
-        attackRange = GetComponent<CapsuleCollider2D>();
+        BoxCollider2D[] boxes = GetComponents<BoxCollider2D>();
+
+        collisionBox = boxes[0];
+        attackRange = boxes[1];
 
         pos = transform.position;
     }
@@ -33,6 +35,10 @@ public class Walker : MonoBehaviour
         if(PlayerInRange())
         {
             Attack();
+        }
+        else
+        {
+            canMove = true;
         }
         transform.position = pos;
     }
@@ -116,7 +122,7 @@ public class Walker : MonoBehaviour
     }
 
     /// <summary>
-    /// Casts in front of it to see if the player is in attack range
+    /// Casts a ray in the attack range box to detect the player
     /// </summary>
     /// <returns></returns>
     bool PlayerInRange()
@@ -141,11 +147,11 @@ public class Walker : MonoBehaviour
         }
         if (facingRight)
         {
-            Debug.DrawRay(attackRange.bounds.center, Vector2.right * (attackRange.bounds.extents.x + .01f), rayColor);
+            Debug.DrawRay(attackRange.bounds.center + new Vector3(.5f, 0, 0), Vector2.right * (attackRange.bounds.extents.x - .5f + .01f), rayColor);
         }
         else
         {
-            Debug.DrawRay(attackRange.bounds.center, Vector2.left * (attackRange.bounds.extents.x + .01f), rayColor);
+            Debug.DrawRay(attackRange.bounds.center + new Vector3(-.5f, 0, 0), Vector2.left * (attackRange.bounds.extents.x - .5f + .01f), rayColor);
         }
         return hit.collider != null;
     }
