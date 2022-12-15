@@ -130,11 +130,11 @@ public class Walker : MonoBehaviour
         RaycastHit2D hit;
         if (facingRight)
         {
-            hit = Physics2D.Raycast(attackRange.bounds.center, Vector2.right, attackRange.bounds.extents.x, playerLayerMask);
+            hit = Physics2D.Raycast(attackRange.bounds.center + new Vector3(.5f, 0, 0), Vector2.right, attackRange.bounds.extents.x - .5f, playerLayerMask);
         }
         else
         {
-            hit = Physics2D.Raycast(attackRange.bounds.center, Vector2.left, attackRange.bounds.extents.x, playerLayerMask);
+            hit = Physics2D.Raycast(attackRange.bounds.center + new Vector3(-.5f, 0, 0), Vector2.left, attackRange.bounds.extents.x - .5f, playerLayerMask);
         }
         Color rayColor;
         if (hit.collider != null)
