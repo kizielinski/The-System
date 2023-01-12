@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Controller))]
+[RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
 {
     // Variables that can be set in the inspector related to physics
@@ -19,14 +19,14 @@ public class Player : MonoBehaviour
     float velocityXSmoothing;
 
     // Reference to the controller script
-    Controller controller;
+    PlayerController controller;
 
     /// <summary>
     /// Gets a reference to the Controller script and calculates the gravity and jumpVelocity values
     /// </summary>
     void Start()
     {
-        controller = GetComponent<Controller>();
+        controller = GetComponent<PlayerController>();
 
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity * timeToJumpApex);

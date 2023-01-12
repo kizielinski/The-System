@@ -2,28 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
-public class Controller : MonoBehaviour
+public class PlayerController : RaycastController
 {
-    // Getting the proper layer that the player is supposed to collide with
-    public LayerMask collisionMask;
-
-    // Raycasting values
-    const float skinWidth = .015f; // How far into the object the rays start
-    public int horizontalRayCount = 4;
-    public int verticalRayCount = 4;
-    float horizontalRaySpacing;
-    float verticalRaySpacing;
-
     // The maximum angle of a slope that the player can climb
     float maxClimbAngle = 80;
     float maxDescendAngle = 75;
-
-    // Player collision info
-    BoxCollider2D playerCollider;
-
-    // Raycast struct definition
-    RaycastOrigins raycastOrigins;
 
     // Collision info struct definition
     public CollisionInfo collisions;
@@ -31,10 +14,10 @@ public class Controller : MonoBehaviour
     /// <summary>
     /// Get's the player's collision box and calculates the ray spacing for the raycasting
     /// </summary>
-    void Start()
+    public override void Start()
     {
-        playerCollider = GetComponent<BoxCollider2D>();
-        CalculateRaySpacing();
+        base.Start();
+
     }
 
     /// <summary>
@@ -42,7 +25,7 @@ public class Controller : MonoBehaviour
     /// before moving the player to it's expected location
     /// </summary>
     /// <param name="velocity">The player's current velocity after user input</param>
-    public void Move(Vector3 velocity)
+    public void Move(Vector3 velocity, bool standingOnPlatform = false)
     {
         // Updates the four corners of the raycast box
         UpdateRaycastOrigins();
@@ -70,6 +53,11 @@ public class Controller : MonoBehaviour
 
         // Moves the player after necessary alterations are done to the velocity
         transform.Translate(velocity);
+
+        if(standingOnPlatform)
+        {
+            collisions.below = true;
+        }
     }
 
     /// <summary>
@@ -101,6 +89,11 @@ public class Controller : MonoBehaviour
             // Steps to take after a raycast has hit
             if (hit)
             {
+                if (hit.distance == 0)
+                {
+                    continue;
+                }
+
                 // Gets the angle of the hit object
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
@@ -260,44 +253,6 @@ public class Controller : MonoBehaviour
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// Calculates how much space should be in between each ray
-    /// </summary>
-    void CalculateRaySpacing()
-    {
-        Bounds bounds = playerCollider.bounds;
-        bounds.Expand(skinWidth * -2);
-
-        horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, 6);
-        verticalRayCount = Mathf.Clamp(verticalRayCount, 2, 6);
-
-        horizontalRaySpacing = bounds.size.y / (horizontalRayCount - 1);
-        verticalRaySpacing = bounds.size.y / (verticalRayCount - 1);
-    }
-
-    /// <summary>
-    /// Updates the four corners of the box where the raycasts will begin drawing from
-    /// </summary>
-    void UpdateRaycastOrigins()
-    {
-        Bounds bounds = playerCollider.bounds;
-        bounds.Expand(skinWidth * -2);
-
-        raycastOrigins.bottomLeft = new Vector2(bounds.min.x, bounds.min.y);
-        raycastOrigins.bottomRight = new Vector2(bounds.max.x, bounds.min.y);
-        raycastOrigins.topLeft = new Vector2(bounds.min.x, bounds.max.y);
-        raycastOrigins.topRight = new Vector2(bounds.max.x, bounds.max.y);
-    }
-
-    /// <summary>
-    /// Keeps track of all four corners of the raycasting box
-    /// </summary>
-    struct RaycastOrigins
-    {
-        public Vector2 topLeft, topRight;
-        public Vector2 bottomLeft, bottomRight;
     }
 
     /// <summary>
