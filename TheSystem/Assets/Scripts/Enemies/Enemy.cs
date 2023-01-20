@@ -2,51 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Walker : MonoBehaviour
+public class Enemy : Entity
 {
     [SerializeField] private LayerMask platformLayerMask;
     [SerializeField] private LayerMask playerLayerMask;
 
     public bool facingRight;
-    public float walkSpeed;
+    [SerializeField] public float walkSpeed;
+    protected bool canMove;
+    protected BoxCollider2D collisionBox;
+    protected BoxCollider2D attackRange;
+    protected Vector2 pos;
+    protected float attackTimer;
+    protected bool isAttacking = false;
 
-    private bool canMove;
+    protected float attackDamage;
+    protected float attackDuration;
+    protected float attackStatusEffect;
 
-    private BoxCollider2D collisionBox;
-    private BoxCollider2D attackRange;
-
-    private Vector2 pos;
-
-    void Start()
+    /// <summary>
+    /// Attacks the Player
+    /// </summary>
+    protected virtual IEnumerator Attack()
     {
-        canMove = true;
-
-        BoxCollider2D[] boxes = GetComponents<BoxCollider2D>();
-
-        collisionBox = boxes[0];
-        attackRange = boxes[1];
-
-        pos = transform.position;
+        yield return null;
     }
 
-    private void FixedUpdate()
+    protected void AttackCooldown()
     {
-        Walk();
-        if(PlayerInRange())
-        {
-            Attack();
-        }
-        else
-        {
-            canMove = true;
-        }
-        transform.position = pos;
+
     }
 
     /// <summary>
     /// Moves the enemy until it hits a wall, if it can move
     /// </summary>
-    void Walk()
+    protected void Walk()
     {
         if (canMove)
         {
@@ -105,7 +95,7 @@ public class Walker : MonoBehaviour
     /// </summary>
     void TurnAround()
     {
-        if(facingRight)
+        if (facingRight)
         {
             facingRight = false;
             return;
@@ -114,18 +104,10 @@ public class Walker : MonoBehaviour
     }
 
     /// <summary>
-    /// Attacks the Player
-    /// </summary>
-    void Attack()
-    {
-        canMove = false;
-    }
-
-    /// <summary>
     /// Casts a ray in the attack range box to detect the player
     /// </summary>
     /// <returns></returns>
-    bool PlayerInRange()
+    protected bool PlayerInRange()
     {
         RaycastHit2D hit;
         if (facingRight)
