@@ -13,12 +13,16 @@ public class Enemy : Entity
     protected BoxCollider2D collisionBox;
     protected BoxCollider2D attackRange;
     protected Vector2 pos;
-    protected float attackTimer;
-    protected bool isAttacking = false;
 
-    protected float attackDamage;
-    protected float attackDuration;
-    protected float attackStatusEffect;
+    //Attacks
+    [SerializeField] protected float attackDuration; //How fast the attack comes out
+    [SerializeField] protected float attackCooldown; //Attack cooldown
+    [SerializeField] protected float attackCooldownTimer; //Tracks Attack Cooldown
+    [SerializeField] protected bool attackCooldownFinished; //Tracks Attack Cooldown if finished [DEBUG]
+    [SerializeField] protected bool isAttacking = false; //Handles mid attack checks
+    [SerializeField] protected bool canAttack = false; //Checks for no cooldown on attack
+    protected float attackDamage; 
+    protected float attackStatusEffect; 
 
     /// <summary>
     /// Attacks the Player
@@ -28,9 +32,9 @@ public class Enemy : Entity
         yield return null;
     }
 
-    protected void AttackCooldown()
+    protected virtual IEnumerator AttackCooldown()
     {
-
+        yield return null;
     }
 
     /// <summary>

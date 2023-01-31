@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Walker : Enemy
+public class OverheadWalker : Enemy
 {
     BoxCollider2D damageBox;
 
@@ -13,8 +13,7 @@ public class Walker : Enemy
         canMove = true;
         walkSpeed = 1;
         healthPool = 10;
-        attackDuration = 0.5f;
-        attackCooldown = 1.0f;
+        attackDuration = 1.0f;
 
         BoxCollider2D[] boxes = GetComponentsInChildren<BoxCollider2D>();
 
@@ -23,38 +22,24 @@ public class Walker : Enemy
         damageBox = boxes[2];
 
         pos = transform.position;
-
-        canAttack = false;
-        attackCooldownFinished = true;
     }
 
     private void FixedUpdate()
     {
-        if(canAttack) //If cooldown done, able to attack
+        Walk();
+        if (PlayerInRange())
         {
-            if(PlayerInRange()) //Check range
+            if (!isAttacking)
             {
-                isAttacking = true;
                 StartCoroutine(Attack());
             }
-        }
-        else if(attackCooldownFinished) //Start a new cooldown
-        {
-            StartCoroutine(AttackCooldown());
-        }
 
-        //If not attacking walk.
-        if (!isAttacking && !PlayerInRange())
-        {
-            Walk();
         }
-
         transform.position = pos;
     }
 
     protected override IEnumerator Attack()
     {
-        canAttack = false;
         canMove = false;
         isAttacking = true;
 
@@ -63,53 +48,50 @@ public class Walker : Enemy
         //Get transform and rotation for hitbox.
         Transform damageBoxTransform = damageBox.transform;
         Vector3 attackStartPosition = damageBoxTransform.position;
-
+        Quaternion attackRotation = damageBoxTransform.rotation;
 
         //Orient attack direction
-        float attackdirection = 4.0f;
-        if(facingRight)
-        { attackdirection *= 1.0f; }
+        float attackdirection = 0.0f;
+        if (facingRight)
+        { attackdirection = 1.0f; }
         else
-        { attackdirection *= -1.0f; }
+        { attackdirection = -1.0f; }
 
         //Setup values for lerp calculation
-        Vector3 attackEndPos = new Vector3(attackdirection + attackStartPosition.x, attackStartPosition.y, 0);
+        Vector3 attackEndPos = new Vector3(attackdirection + attackStartPosition.x, attackStartPosition.y - 1.0f, 0);
 
         //Setup Lerp values
+        Vector3 tempRotation = new Vector3();
+        Quaternion tempRotationFinal = new Quaternion();
         Vector3 attackPosition = new Vector3();
+        float attackEndRotation = attackdirection * -90f;
         float currentTime = 0;
 
-        while(currentTime < attackDuration)
+        while (currentTime < attackDuration)
         {
             attackPosition.x = Mathf.Lerp(attackStartPosition.x, attackEndPos.x, currentTime);
             attackPosition.y = Mathf.Lerp(attackStartPosition.y, attackEndPos.y, currentTime);
 
             damageBox.transform.position = attackPosition;
 
+
+            tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime);
+            tempRotationFinal.eulerAngles = tempRotation;
+            damageBox.transform.rotation = tempRotationFinal;
+
             currentTime += Time.deltaTime;
             yield return null;
         }
 
         //End the attack
+        //Set end position
+        damageBox.transform.localPosition = new Vector3(0, 1, 0);
+
+        //Set end rotation
+        tempRotation.z = attackEndRotation;
+        damageBoxTransform.transform.rotation = new Quaternion(0, 0, 0, 0);
+
         isAttacking = false;
         canMove = true;
-
-        //Set end position
-        damageBox.transform.localPosition = new Vector3(0, 0.25f, 0);
-        this.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
-    } 
-    
-    protected override IEnumerator AttackCooldown()
-    {
-        while (attackCooldownTimer < attackCooldown)
-        {
-            attackCooldownTimer += Time.deltaTime;
-            attackCooldownFinished = false;
-            yield return null;
-        }
-
-        attackCooldownTimer = 0;
-        attackCooldownFinished = true;
-        canAttack = true;
     }
 }
