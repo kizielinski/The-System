@@ -1,3 +1,9 @@
+//Kyle Zielinski
+//2/1/2023
+//This class defines what entites are in our game and how they
+//interact with the game rules and being a Unity GameObject.
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

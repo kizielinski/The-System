@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Walker : Enemy
 {
-    BoxCollider2D damageBox;
+    private BoxCollider2D damageBox;
 
     void Start()
     {
@@ -98,18 +98,4 @@ public class Walker : Enemy
         damageBox.transform.localPosition = new Vector3(0, 0.25f, 0);
         this.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
     } 
-    
-    protected override IEnumerator AttackCooldown()
-    {
-        while (attackCooldownTimer < attackCooldown)
-        {
-            attackCooldownTimer += Time.deltaTime;
-            attackCooldownFinished = false;
-            yield return null;
-        }
-
-        attackCooldownTimer = 0;
-        attackCooldownFinished = true;
-        canAttack = true;
-    }
 }

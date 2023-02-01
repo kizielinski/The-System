@@ -1,17 +1,25 @@
+//Kyle Zielinski
+//2/1/2023
+//Base enemy class that sets up initial parameters for enemies in the game
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Entity
 {
-    [SerializeField] private LayerMask platformLayerMask;
-    [SerializeField] private LayerMask playerLayerMask;
+    [SerializeField] protected LayerMask platformLayerMask;
+    [SerializeField] protected LayerMask playerLayerMask;
 
+    //Orientation values
     public bool facingRight;
     [SerializeField] public float walkSpeed;
     protected bool canMove;
+
+
     protected BoxCollider2D collisionBox;
     protected BoxCollider2D attackRange;
+    protected float viewRange;
     protected Vector2 pos;
 
     //Attacks
@@ -34,7 +42,20 @@ public class Enemy : Entity
 
     protected virtual IEnumerator AttackCooldown()
     {
-        yield return null;
+        while (attackCooldownTimer < attackCooldown)
+        {
+            attackCooldownTimer += Time.deltaTime;
+            attackCooldownFinished = false;
+            yield return null;
+        }
+
+        attackCooldownTimer = 0;
+        attackCooldownFinished = true;
+        canAttack = true;
+    }
+
+    protected virtual void Search()
+    {
     }
 
     /// <summary>
