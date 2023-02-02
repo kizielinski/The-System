@@ -6,11 +6,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // Variables that can be set in the inspector related to physics
-    public float jumpHeight = 4;
-    public float timeToJumpApex = .4f;
-    public float accelerationTimeAirborne = .2f;
-    public float accelerationTimeGrounded = .1f;
-    public float moveSpeed = 6;
+    public float jumpHeight = 2;
+    public float timeToJumpApex = .3f;
+    public float accelerationTimeAirborne = .07f;
+    public float accelerationTimeGrounded = .08f;
+    public float moveSpeed = 8;
 
     // Calculated values based on the variables above
     float gravity;

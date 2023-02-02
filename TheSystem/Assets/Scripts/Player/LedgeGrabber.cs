@@ -42,11 +42,11 @@ public class LedgeGrabber : MonoBehaviour
         
         if(!drop || controller.collisions.below)
         {
-            upperCastStart = player.gameObject.transform.position + new Vector3(Mathf.Sign(player.Velocity.x) * player.gameObject.transform.localScale.x / 2, 1f);
+            upperCastStart = player.gameObject.transform.position + new Vector3(Mathf.Sign(player.Velocity.x) * player.gameObject.transform.localScale.x / 2, .5f);
             upperCastHit = Physics2D.Raycast(upperCastStart, Vector2.right * Mathf.Sign(player.Velocity.x), upperCastEnd, platformLayer);
             //Debug.DrawRay(upperCastStart, Vector2.right * Mathf.Sign(player.Velocity.x) * upperCastEnd, Color.blue);
 
-            lowerCastStart = player.gameObject.transform.position + new Vector3(Mathf.Sign(player.Velocity.x) * player.gameObject.transform.localScale.x / 2, 0f);
+            lowerCastStart = player.gameObject.transform.position + new Vector3(Mathf.Sign(player.Velocity.x) * player.gameObject.transform.localScale.x / 2, .48f);
             lowerCastHit = Physics2D.Raycast(lowerCastStart, Vector2.right * Mathf.Sign(player.Velocity.x), lowerCastEnd, platformLayer);
             //Debug.DrawRay(lowerCastStart, Vector2.right * Mathf.Sign(player.Velocity.x) * lowerCastEnd, Color.yellow);
 
