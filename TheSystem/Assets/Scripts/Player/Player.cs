@@ -30,12 +30,17 @@ public class Player : MonoBehaviour
     //reference to the ledge grab scrip
     LedgeGrabber grabber;
 
+    //reference to the wall slide script
+    WallSlide slider;
+
     /// <summary>
     /// Gets a reference to the Controller script and calculates the gravity and jumpVelocity values
     /// </summary>
     void Start()
     {
+        //gets the script
         grabber = GetComponent<LedgeGrabber>();
+        slider = GetComponent<WallSlide>();
         controller = GetComponent<PlayerController>();
 
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
@@ -48,7 +53,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
-        if(controller.collisions.above || controller.collisions.below || grabber.CanGrabLedge)
+        if(controller.collisions.above || controller.collisions.below || grabber.IsGrabbingLedge)
         {
             velocity.y = 0;
         }
@@ -56,21 +61,11 @@ public class Player : MonoBehaviour
         // Gets the current player axis input
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        // Checks if the player performed a jump
-        if((Input.GetKeyDown(KeyCode.Space) && controller.collisions.below))
+        // Checks if the player can perform a jump
+        if(Input.GetKeyDown(KeyCode.Space) && controller.collisions.below 
+            || (Input.GetKeyDown(KeyCode.Space) && slider.IsWallSliding && slider.ResetJump)
+            || (Input.GetKeyDown(KeyCode.Space) && grabber.IsGrabbingLedge))
         {
-            velocity.y = jumpVelocity;
-        }
-        else if(Input.GetKeyDown(KeyCode.Space)&&grabber.CanGrabLedge)
-        {
-            if (controller.collisions.left)
-            {
-                transform.position += new Vector3(0.1f, 0f);
-            }
-            else
-            {
-                transform.position += new Vector3(-0.1f, 0f);
-            }
             velocity.y = jumpVelocity;
         }
 
@@ -79,8 +74,18 @@ public class Player : MonoBehaviour
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
         // Updates the player's velocity
-        if(!grabber.CanGrabLedge)
+
+        //if the player is wall sliding
+        if (slider.IsWallSliding)
         {
+            //fall at fixed velocity
+            Debug.Log("sliding");
+            velocity.y = (gravity * 25) * Time.deltaTime;
+        }
+        //otherwise if the player is not grabbing a ledge
+        else if (!grabber.IsGrabbingLedge)
+        {
+            //fall normally
             velocity.y += gravity * Time.deltaTime;
         }
         controller.Move(velocity * Time.deltaTime);
