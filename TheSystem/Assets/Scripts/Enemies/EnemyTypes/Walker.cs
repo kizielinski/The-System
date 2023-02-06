@@ -1,3 +1,7 @@
+//Kyle Zielinski
+//2/1/2023
+//This enemy walks back and forth only attacking the player if it's within its own range.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

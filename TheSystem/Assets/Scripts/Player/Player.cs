@@ -1,4 +1,4 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +11,20 @@ public class Player : MonoBehaviour
     public float accelerationTimeAirborne = .07f;
     public float accelerationTimeGrounded = .08f;
     public float moveSpeed = 8;
+    private float knockBackTime = 0.750f;
+    private bool isDamaged = false;
 
     // Calculated values based on the variables above
     float gravity;
     float jumpVelocity;
     Vector3 velocity;
     float velocityXSmoothing;
+
+    public bool IsDamaged
+    {
+        get { return isDamaged; }
+        set { isDamaged = value; }
+    }
 
     //velocity getter
     public Vector3 Velocity
@@ -83,6 +91,56 @@ public class Player : MonoBehaviour
         {
             velocity.y += gravity * Time.deltaTime;
         }
+
         controller.Move(velocity * Time.deltaTime);
+
+    }
+
+    /// <summary>
+    /// Handles player knockback on player taking damage or hitting an enviroment hazard
+    /// </summary>
+    /// <param name="attackDirectionVector">
+    /// Vector passed in from enemy so orientation can be ascertained.
+    /// </param>
+    /// <returns></returns>
+    private IEnumerator PlayerKnockback(float attackDirectionVector, float damage)
+    {
+        isDamaged = true;
+        float valueMS = moveSpeed;
+        moveSpeed = 0;
+
+        float directionKnockback = (attackDirectionVector > 0) ? -1 : 1;
+
+        if (damage <= 0)
+        {
+            damage = 1;
+        }
+
+        Vector3 knockBack = new Vector3(directionKnockback * ((damage * 30)), (damage * 5), 0);
+
+        //Knockback Code
+        velocity = knockBack;
+
+        yield return new WaitForSeconds(knockBackTime);
+
+        moveSpeed = valueMS;
+        isDamaged = false;
+    }
+    
+    /// <summary>
+    /// Makes player take damage and calls knockback function instantly giving player a couple iFrames
+    /// </summary>
+    /// <param name="damageVector">
+    /// Vector passed in from enemy so orientation can be ascertained.
+    /// </param>
+    public void PlayerTakeDamage(float damageVector, float damage)
+    {
+        //Knockback stuff
+        if(!isDamaged)
+        {
+            StartCoroutine(PlayerKnockback(damageVector, damage));
+        }
+        
+        //Blah blah blah code etc.
     }
 }
