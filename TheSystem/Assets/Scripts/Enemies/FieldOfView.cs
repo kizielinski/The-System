@@ -1,0 +1,93 @@
+//Kyle Zielinski
+//2/10/2023
+//This script handles a FOV cone for player/enemies, will also be upgraded to allow more variability.
+using UnityEngine;
+
+public class FieldOfView : MonoBehaviour
+{
+    private Mesh mesh;
+    [SerializeField] private LayerMask layerMask;
+    private float fov;
+    private float startingAngle;
+    private Vector3 origin;
+
+    public bool playerHit;
+
+    private void Start()
+    {
+        //defaultValues
+        mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh;
+        origin = Vector3.zero;
+        fov = 45;
+        playerHit = false;
+    }
+
+    private void LateUpdate()
+    {
+        int rayCount = 50;
+        float angle = startingAngle;
+        float angleIncrease = fov / rayCount;
+        float viewDistance = 50f; //How far cone travels
+
+        Vector3[] vertices = new Vector3[rayCount + 1 + 1];
+        Vector2[] uv = new Vector2[vertices.Length];
+        int[] triangles = new int[rayCount * 3];
+
+        vertices[0] = Vector3.zero; //FOV origin vertex
+
+        int vertexIndex = 1;
+        int triangleIndex = 0;
+
+        for (int i = 0; i <= rayCount; i++)
+        {
+            Vector3 vertex;
+            RaycastHit2D hit = Physics2D.Raycast(origin, Utilities.GetVectorFromAngle(angle), viewDistance); // Cast some rays out
+            if(hit.collider == null)
+            {
+                //NoHit
+                vertex = origin + Utilities.GetVectorFromAngle(angle) * viewDistance; //Ray/mesh fully extends out
+            }
+            else
+            {
+                //Hit
+                vertex = hit.point; //Clip ray
+
+                if(hit.collider.tag == "Player") //If ray hits x specifically do y
+                {
+                    playerHit = true;
+                }
+            }
+
+            vertices[vertexIndex] = vertex - origin;
+
+            if(i > 0)
+            {
+                triangles[triangleIndex + 0] = 0;
+                triangles[triangleIndex + 1] = vertexIndex - 1;
+                triangles[triangleIndex + 2] = vertexIndex;
+                
+                triangleIndex += 3;
+            }
+
+            vertexIndex++;
+            angle -= angleIncrease;
+        }
+
+        mesh.vertices = vertices;
+        mesh.uv = uv;
+        mesh.triangles = triangles;
+    }
+
+    //Sets fov origin to gameobjects current location or other input
+    public void SetOrigin(Vector3 origin)
+    {
+        this.origin = origin;
+    }
+
+    //Sets aim to desired location
+    public void SetAimDirection(Vector3 aimDirection)
+    {
+        startingAngle = Utilities.GetAngleFromVector(aimDirection) + fov/2;
+    }
+}

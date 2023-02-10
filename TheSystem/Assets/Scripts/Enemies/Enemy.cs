@@ -30,7 +30,10 @@ public class Enemy : Entity
     [SerializeField] protected bool isAttacking = false; //Handles mid attack checks
     [SerializeField] protected bool canAttack = false; //Checks for no cooldown on attack
     protected float attackDamage; 
-    protected float attackStatusEffect; 
+    protected float attackStatusEffect;
+
+    //Status
+    protected bool isAlive;
 
     /// <summary>
     /// Attacks the Player
