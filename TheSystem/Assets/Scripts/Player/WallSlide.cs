@@ -47,7 +47,9 @@ public class WallSlide : MonoBehaviour
         {
             //if the player is holding into a wall, is not grabbing a ledge, and has a downward velocity
             if ((Input.GetKey(KeyCode.A) && controller.collisions.left && !controller.collisions.below && !ledge.IsGrabbingLedge && player.Velocity.y < 0)
-            || (Input.GetKey(KeyCode.D) && controller.collisions.right && !controller.collisions.below && !ledge.IsGrabbingLedge && player.Velocity.y < 0))
+            || (Input.GetKey(KeyCode.D) && controller.collisions.right && !controller.collisions.below && !ledge.IsGrabbingLedge && player.Velocity.y < 0)
+            || (Input.GetKey(KeyCode.LeftArrow) && controller.collisions.left && !controller.collisions.below && !ledge.IsGrabbingLedge && player.Velocity.y < 0)
+            || (Input.GetKey(KeyCode.RightArrow) && controller.collisions.right && !controller.collisions.below && !ledge.IsGrabbingLedge && player.Velocity.y < 0))
             {
                 //they are wall sliding
                 return true;
