@@ -16,6 +16,13 @@ public class Entity : MonoBehaviour
     protected bool canTakeDamage = false;
     protected bool isMechanicTrigger = false;
 
+    protected float gravity;
+    protected float mass = 1;
+    protected Vector3 acceleration;
+    protected Vector3 velocity;
+
+    protected bool isDamaged = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,5 +36,17 @@ public class Entity : MonoBehaviour
     void Update()
     {
         
+    }
+
+    //velocity getter
+    public Vector3 Velocity
+    {
+        get { return velocity; }
+    }
+
+    public bool IsDamaged
+    {
+        get { return isDamaged; }
+        set { isDamaged = value; }
     }
 }

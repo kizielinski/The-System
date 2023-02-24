@@ -9,8 +9,8 @@ using UnityEngine;
 public class Drone : Enemy
 {
     // Start is called before the first frame update
-    FieldOfView fov;
-    Vector3 currentPos;
+    private FieldOfView fov;
+    private Vector3 currentPos;
     public float stepValue; 
     void Start()
     {

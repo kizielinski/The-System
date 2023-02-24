@@ -5,9 +5,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class Enemy : Entity
 {
+    EnemyController controller;
     [SerializeField] protected LayerMask platformLayerMask;
     [SerializeField] protected LayerMask playerLayerMask;
 
@@ -15,6 +17,8 @@ public class Enemy : Entity
     public bool facingRight;
     [SerializeField] public float walkSpeed;
     protected bool canMove;
+    private float cosValue = 0;
+    private float stepValue = 0.5f;
 
 
     protected BoxCollider2D collisionBox;
@@ -34,6 +38,26 @@ public class Enemy : Entity
 
     //Status
     protected bool isAlive;
+
+    public void FixedUpdate()
+    {
+        // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
+        if (controller.collisions.above || controller.collisions.below)
+        {
+            velocity.y = 0;
+        }
+
+        // Gets the current player axis input
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        // Smooths out horizontal movement
+        float targetVelocityX = walkSpeed;
+        //velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+
+        // Updates the player's velocity
+
+        controller.Move(velocity * Time.deltaTime);
+    }
 
     /// <summary>
     /// Attacks the Player
@@ -81,6 +105,15 @@ public class Enemy : Entity
                 TurnAround();
             }
         }
+    }
+
+    protected void Patrol()
+    {
+        pos = transform.position;
+        float walkValue = walkSpeed * Mathf.Cos(cosValue) * Time.deltaTime;
+        pos.x += walkValue;
+        cosValue += stepValue * Time.deltaTime;
+        facingRight = walkValue > 0;
     }
 
     /// <summary>
