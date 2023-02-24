@@ -1,6 +1,7 @@
 //Kyle Zielinski
 //2/10/2023
 //This script handles a FOV cone for player/enemies, will also be upgraded to allow more variability.
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
@@ -10,6 +11,8 @@ public class FieldOfView : MonoBehaviour
     private float fov;
     private float startingAngle;
     private Vector3 origin;
+
+    [SerializeField] private List<Collider2D> collidersToIgnore;
 
     public bool playerHit;
 
@@ -42,10 +45,15 @@ public class FieldOfView : MonoBehaviour
         for (int i = 0; i <= rayCount; i++)
         {
             Vector3 vertex;
-            RaycastHit2D hit = Physics2D.Raycast(origin, Utilities.GetVectorFromAngle(angle), viewDistance); // Cast some rays out
+
+            RaycastHit2D hit = Physics2D.Raycast(origin, Utilities.GetVectorFromAngle(angle), viewDistance, layerMask); // Cast some rays out
             if(hit.collider == null)
             {
                 //NoHit
+                vertex = origin + Utilities.GetVectorFromAngle(angle) * viewDistance; //Ray/mesh fully extends out
+            }
+            else if(IgnoreColliders(hit.collider.name))
+            {
                 vertex = origin + Utilities.GetVectorFromAngle(angle) * viewDistance; //Ray/mesh fully extends out
             }
             else
@@ -89,5 +97,23 @@ public class FieldOfView : MonoBehaviour
     public void SetAimDirection(Vector3 aimDirection)
     {
         startingAngle = Utilities.GetAngleFromVector(aimDirection) + fov/2;
+    }
+
+    private bool IgnoreColliders(string name)
+    {
+        foreach(Collider2D c in collidersToIgnore)
+        {
+            if (name == c.name)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void SetFOV(float _fov)
+    {
+        fov = _fov;
     }
 }

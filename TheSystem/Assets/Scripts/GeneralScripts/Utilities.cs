@@ -23,4 +23,11 @@ public class Utilities
         return angle;
     }
 
+    public static Vector3 DirectionToTarget(Vector3 target, Vector3 origin)
+    {
+        Vector3 directionVector = (target - origin).normalized;
+
+        return directionVector;
+    }
+
 }
