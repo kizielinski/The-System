@@ -26,6 +26,21 @@ public class Player : MonoBehaviour
         set { isDamaged = value; }
     }
 
+
+
+    //temporary grapple stuff sorry
+    public LineRenderer grapple;
+    public bool isGrappleOn;
+    float distanceX;
+    float distanceY;
+    float distance;
+    Vector2 mousPos;
+    //temporary test case, will be removed in final 
+    public Camera cameraObj;
+
+
+
+
     //velocity getter
     public Vector3 Velocity
     {
@@ -46,6 +61,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void Start()
     {
+        grapple.enabled = false;
         //gets the script
         grabber = GetComponent<LedgeGrabber>();
         slider = GetComponent<WallSlide>();
@@ -61,7 +77,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
-        if(controller.collisions.above || controller.collisions.below || grabber.IsGrabbingLedge)
+        if (controller.collisions.above || controller.collisions.below || grabber.IsGrabbingLedge)
         {
             velocity.y = 0;
         }
@@ -70,7 +86,7 @@ public class Player : MonoBehaviour
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         // Checks if the player can perform a jump
-        if(Input.GetKeyDown(KeyCode.Space) && controller.collisions.below 
+        if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below
             || (Input.GetKeyDown(KeyCode.Space) && slider.IsWallSliding && slider.ResetJump)
             || (Input.GetKeyDown(KeyCode.Space) && grabber.IsGrabbingLedge))
         {
@@ -99,7 +115,42 @@ public class Player : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
+
+        //temporary grapple code i needed velocity sorry
+        if(isGrappleOn)
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                mousPos = (Vector2)cameraObj.ScreenToWorldPoint(Input.mousePosition);
+                grapple.SetPosition(0, mousPos);
+                grapple.SetPosition(1, transform.position);
+                distance = Mathf.Sqrt(Mathf.Pow((transform.position.x - mousPos.x), 2) + Mathf.Pow((transform.position.y - mousPos.y), 2));
+
+                grapple.enabled = true;
+            }
+            else if (Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                grapple.enabled = false;
+            }
+
+            if (grapple.enabled)
+            {
+                grapple.SetPosition(1, transform.position);
+
+                if (Vector2.Distance(transform.position, mousPos) > distance)
+                {
+                    velocity.x -= 20 * (transform.position.x - mousPos.x) * Time.deltaTime;
+                }
+
+                if (Vector2.Distance(transform.position, mousPos) > distance)
+                {
+                    velocity.y -= 20 * (transform.position.y - mousPos.y) * Time.deltaTime;
+                }
+            }
+        }
+        
     }
+
 
     /// <summary>
     /// Handles player knockback on player taking damage or hitting an enviroment hazard
