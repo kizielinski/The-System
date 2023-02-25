@@ -17,7 +17,6 @@ public class EnemyController : RaycastController
     public override void Start()
     {
         base.Start();
-
     }
 
     /// <summary>
@@ -76,7 +75,7 @@ public class EnemyController : RaycastController
         // Loops through rays to cast looking for a collision
         for (int i = 0; i < verticalRayCount; i++)
         {
-            // Sets the origin of the first ray to be on the left or right depending on what direction the player is facing
+            // Sets the origin of the first ray to be on the left or right depending on what direction the entity is facing
             Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
             // Offsets each ray by the correct spacing amount
             rayOrigin += Vector2.up * (horizontalRaySpacing * i);
@@ -97,7 +96,7 @@ public class EnemyController : RaycastController
                 // Gets the angle of the hit object
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
-                // Checking if the player can climb the slope
+                // Checking if the entity can climb the slope
                 if (i == 0 && slopeAngle <= maxClimbAngle)
                 {
                     // Check if the player was previously descending a slope
@@ -120,7 +119,7 @@ public class EnemyController : RaycastController
                     velocity.x += distanceToSlopeStart * directionX;
                 }
 
-                // Things to do when the player can't climb the new slope
+                // Things to do when the entity can't climb the new slope
                 if (!collisions.climbingSlope || slopeAngle > maxClimbAngle)
                 {
                     // Stop the player from going through the wall

@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
 {
+    public static Player instance;
     // Variables that can be set in the inspector related to physics
     public float jumpHeight = 2;
     public float timeToJumpApex = .3f;
@@ -61,6 +62,10 @@ public class Player : MonoBehaviour
     /// </summary>
     void Start()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
         grapple.enabled = false;
         //gets the script
         grabber = GetComponent<LedgeGrabber>();

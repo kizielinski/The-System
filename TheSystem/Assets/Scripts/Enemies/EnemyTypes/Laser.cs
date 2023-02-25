@@ -21,6 +21,8 @@ public class Laser : Enemy
 
         healthPool = 1;
 
+        isHazard = true;
+
         BoxCollider2D[] boxes = GetComponentsInChildren<BoxCollider2D>();
         damageBox = boxes[0];
 

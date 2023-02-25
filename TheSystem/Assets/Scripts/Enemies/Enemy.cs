@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.XR;
 
 public class Enemy : Entity
 {
-    EnemyController controller;
+    //EnemyController controller;
     [SerializeField] protected LayerMask platformLayerMask;
     [SerializeField] protected LayerMask playerLayerMask;
 
@@ -41,22 +41,6 @@ public class Enemy : Entity
 
     public void FixedUpdate()
     {
-        // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
-        if (controller.collisions.above || controller.collisions.below)
-        {
-            velocity.y = 0;
-        }
-
-        // Gets the current player axis input
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-        // Smooths out horizontal movement
-        float targetVelocityX = walkSpeed;
-        //velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
-
-        // Updates the player's velocity
-
-        controller.Move(velocity * Time.deltaTime);
     }
 
     /// <summary>

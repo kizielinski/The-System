@@ -6,6 +6,8 @@ public class CorruptedGuard : Enemy
 {
     private FieldOfView fov;
     [SerializeField] private GameObject shield;
+    private static Object prefab;
+    private bool canThrow;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,10 @@ public class CorruptedGuard : Enemy
         {
             shield = gameObject.GetComponentInChildren<BoxCollider2D>().transform.gameObject; //Rough line to catch null shield values
         }
+
+        prefab = Resources.Load("Prefabs/Projectile");
+
+        canThrow = true;
     }
 
     // Update is called once per frame
@@ -56,7 +62,10 @@ public class CorruptedGuard : Enemy
                 }
                 else
                 {
-                    //ThrowProjectile();
+                    if(canThrow)
+                    {
+                        StartCoroutine(ThrowProjectile());
+                    }
                 }
             }
             else
@@ -70,5 +79,14 @@ public class CorruptedGuard : Enemy
         
     }
 
+    private IEnumerator ThrowProjectile()
+    {
+        canThrow = false;
+        GameObject projBomb = Instantiate(prefab) as GameObject;
+        Projectile p = projBomb.GetComponent<Projectile>();
+        p.SetAcceleration(new Vector3(-10, 9, 0));
+        yield return new WaitForSeconds(3);
+        canThrow = false;
+    }
 
 }
