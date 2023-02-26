@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     public bool isGrappleOn;
     public float newPointX;
     public float newPointY;
+    public float zipSpeedX;
+    public float zipSpeedY;
     float distance;
     Vector2 newPos;
     RaycastHit2D hit;
@@ -231,8 +233,8 @@ public class Player : MonoBehaviour
                 else
                 {
                     //otherwise just keep adding velocities based on the calculated direction (zipvector)
-                    velocity.x += (100*zipVector.x * Time.deltaTime);
-                    velocity.y += (50*zipVector.y * Time.deltaTime);
+                    velocity.x += (zipSpeedX*zipVector.x * Time.deltaTime);
+                    velocity.y += (zipSpeedY*zipVector.y * Time.deltaTime);
 
                     /* other possible way of zipping to point you can mess with in the y direction, 
                      * decide which one is best
