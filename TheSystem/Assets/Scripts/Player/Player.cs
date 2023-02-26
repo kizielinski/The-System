@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     //temporary grapple stuff sorry
     public LineRenderer grapple;
     public bool isGrappleOn;
+    public float newPointX;
+    public float newPointY;
     float distance;
     Vector2 newPos;
     RaycastHit2D hit;
@@ -167,7 +169,7 @@ public class Player : MonoBehaviour
             {
                 
                 //calculate where the new position is based on the player and direction faced
-                newPos = transform.position + new Vector3(7 * Mathf.Sign(velocity.x), 9);
+                newPos = transform.position + new Vector3(newPointX * Mathf.Sign(velocity.x), newPointY);
                 
 
 

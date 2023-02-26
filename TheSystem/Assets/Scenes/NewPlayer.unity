@@ -2108,6 +2108,8 @@ MonoBehaviour:
   moveSpeed: 8
   grapple: {fileID: 1707760342}
   isGrappleOn: 1
+  newPointX: 7
+  newPointY: 9
   cameraObj: {fileID: 1465267365}
 --- !u!114 &1707760336
 MonoBehaviour:
