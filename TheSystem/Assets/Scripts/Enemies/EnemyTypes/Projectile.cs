@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Projectile : Entity
 {
-    Vector3 pos;
-    Vector3 target;
-    Vector3 force;
+    private Vector3 pos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,11 +18,14 @@ public class Projectile : Entity
     // Update is called once per frame
     void Update()
     {
-        base.Update();
-        velocity += acceleration * Time.deltaTime;
-        pos += velocity * Time.deltaTime;
-        transform.position = pos;
-        PrepareNextFrame();
+        if (interactable)
+        {
+            base.Update();
+            velocity += acceleration * Time.deltaTime;
+            pos += (velocity * Time.deltaTime) + (0.5f * acceleration * Mathf.Pow(Time.deltaTime, 2));
+            transform.position = pos;
+            PrepareNextFrame();
+        }
     }
 
     public void PrepareNextFrame()
@@ -36,26 +38,27 @@ public class Projectile : Entity
     {
         float new_gravity = -9.81f;
 
-        if(interactable == false)
-        {
-            new_gravity = 0.0f;
-            velocity = Vector3.zero;
-        }
-
         return new_gravity;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.LogWarning(collision.name);
-        if(collision.tag == "ground")
+        if(collision.tag == "ground" || collision.tag == "Player")
         {
             interactable = false;
+
+            Explode();
         }
     }
 
     public void SetAcceleration(Vector3 _accel)
     {
         acceleration = _accel;
+    }
+
+    private void Explode()
+    {
+
     }
 }

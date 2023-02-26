@@ -40,6 +40,7 @@ public class CorruptedGuard : Enemy
         prefab = Resources.Load("Prefabs/Projectile");
 
         canThrow = true;
+        isAerial = true;
     }
 
     // Update is called once per frame
@@ -73,7 +74,17 @@ public class CorruptedGuard : Enemy
                 Patrol();
             }
 
-            transform.position = new Vector3(pos.x, pos.y, 0);
+            base.Update();
+            if(isAerial)
+            {
+                velocity += acceleration * Time.deltaTime;
+            }
+            else
+            {
+                velocity.x += acceleration.x * Time.deltaTime;
+            }
+            pos += velocity * Time.deltaTime;
+            transform.position = pos;
         }
 
         
@@ -84,7 +95,7 @@ public class CorruptedGuard : Enemy
         canThrow = false;
         GameObject projBomb = Instantiate(prefab) as GameObject;
         Projectile p = projBomb.GetComponent<Projectile>();
-        p.SetAcceleration(new Vector3(-10, 9, 0));
+        p.SetAcceleration(new Vector3(((facingRight == true ? 1 : -1) * 8), 9, 0)); //This is gross needs to be fixed
         yield return new WaitForSeconds(3);
         canThrow = false;
     }
