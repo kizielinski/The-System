@@ -2103,15 +2103,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpHeight: 2
   timeToJumpApex: 0.4
-  accelerationTimeAirborne: 0.07
+  accelerationTimeAirborne: 0.4
   accelerationTimeGrounded: 0.08
   moveSpeed: 8
   grapple: {fileID: 1707760342}
   isGrappleOn: 1
   newPointX: 7
-  newPointY: 9
-  zipSpeedX: 100
-  zipSpeedY: 20
+  newPointY: 5
+  zipSpeedX: 30
+  zipSpeedY: 15
   cameraObj: {fileID: 1465267365}
 --- !u!114 &1707760336
 MonoBehaviour:
