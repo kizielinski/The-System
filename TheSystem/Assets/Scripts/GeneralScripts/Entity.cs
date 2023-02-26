@@ -52,6 +52,7 @@ public class Entity : MonoBehaviour
     {
         float facingRight = velocity.x > 0 ? -1 : 1;
 
+        //Drag and friction
         if((acceleration.x < -0.001f || acceleration.x > 0.001f) && isAerial)
         {
             acceleration += drag * facingRight * Time.deltaTime;
@@ -59,10 +60,6 @@ public class Entity : MonoBehaviour
         else if(acceleration.x < -0.001f || acceleration.x > 0.001f)
         {
             acceleration += friction * facingRight * Time.deltaTime;
-        }
-        else
-        {
-            acceleration = Vector3.zero;
         }
 
         if ((velocity.x < -0.001f || velocity.x > 0.001f) && isAerial)
@@ -75,13 +72,12 @@ public class Entity : MonoBehaviour
         }
         else
         {
-            velocity = Vector3.zero;
+            velocity.x = 0;
         }
 
         if(acceleration.y > -9.81f)
         {
-            acceleration.y += gravity * Time.deltaTime;
-            Debug.LogWarning("Accel" + acceleration);
+            acceleration.y += (gravity - 1.0f) * Time.deltaTime;
         }
         else if (acceleration.y < -10.0f)
         {

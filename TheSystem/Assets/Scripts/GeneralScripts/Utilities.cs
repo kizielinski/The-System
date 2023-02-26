@@ -30,4 +30,9 @@ public class Utilities
         return directionVector;
     }
 
+    public static Vector3 GetTargetPlayer()
+    {
+        return Player.instance.transform.position;
+    }
+
 }

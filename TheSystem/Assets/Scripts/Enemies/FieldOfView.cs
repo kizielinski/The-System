@@ -26,6 +26,14 @@ public class FieldOfView : MonoBehaviour
         playerHit = false;
     }
 
+    public bool PlayerHitIsNow
+    {
+        set
+        {
+            playerHit = value;
+        }
+    }
+
     private void LateUpdate()
     {
         int rayCount = 50;

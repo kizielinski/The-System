@@ -18,13 +18,13 @@ public class Enemy : Entity
     [SerializeField] public float walkSpeed;
     protected bool canMove;
     private float cosValue = 0;
-    private float stepValue = 0.5f;
+    protected float stepValue = 0.5f;
 
 
     protected BoxCollider2D collisionBox;
     protected BoxCollider2D attackRange;
     protected float viewRange;
-    protected Vector2 pos;
+    protected Vector3 pos;
 
     //Attacks
     [SerializeField] protected float attackDuration; //How fast the attack comes out
@@ -39,8 +39,14 @@ public class Enemy : Entity
     //Status
     protected bool isAlive;
 
-    public void FixedUpdate()
+    public void Start()
     {
+       
+    }
+
+    public void Update()
+    {
+        base.Update();
     }
 
     /// <summary>
@@ -181,5 +187,21 @@ public class Enemy : Entity
             Debug.DrawRay(attackRange.bounds.center + new Vector3(-.5f, 0, 0), Vector2.left * (attackRange.bounds.extents.x - .5f + .01f), rayColor);
         }
         return hit.collider != null;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.LogWarning(collision.name);
+        if (collision.tag == "ground")
+        {
+            velocity = Vector3.zero;
+            acceleration = Vector3.zero;
+            isAerial = false;
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        isAerial = true;
     }
 }
