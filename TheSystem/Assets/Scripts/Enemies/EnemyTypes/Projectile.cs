@@ -12,7 +12,6 @@ public class Projectile : Entity
         base.Start();
         pos = transform.position;
         interactable = true;
-        Debug.LogWarning("Hello Projectile!");
     }
 
     // Update is called once per frame
@@ -43,7 +42,6 @@ public class Projectile : Entity
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.LogWarning(collision.name);
         if(collision.tag == "ground" || collision.tag == "Player")
         {
             interactable = false;

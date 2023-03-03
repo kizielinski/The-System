@@ -17,7 +17,7 @@ public class Enemy : Entity
     public bool facingRight;
     [SerializeField] public float walkSpeed;
     protected bool canMove;
-    private float cosValue = 0;
+    protected float cosValue = 0;
     protected float stepValue = 0.5f;
 
 
@@ -203,5 +203,10 @@ public class Enemy : Entity
     public void OnTriggerExit2D(Collider2D collision)
     {
         isAerial = true;
+    }
+
+    public void SetCharacterOrientation(bool facingRight)
+    {
+        cosValue = facingRight ? 0 : Mathf.PI / 2;
     }
 }

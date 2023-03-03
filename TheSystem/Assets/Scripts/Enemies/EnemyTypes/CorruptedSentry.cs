@@ -105,8 +105,6 @@ public class CorruptedSentry : Enemy
                 previousPlayerPos = hit.transform.position;
             }
 
-            float distance = Vector3.Distance(hit.transform.position, previousPlayerPos);
-
             if (canMove)
             {
                 StartCoroutine(SentryMove(hit));
