@@ -111,14 +111,12 @@ public class LedgeGrabber : MonoBehaviour
         if(Input.GetKey(KeyCode.A) && controller.collisions.left)
         {
             //the player climbs to the top of that ledge
-            Debug.Log("test climb left");
             player.transform.position += new Vector3(-0.5f, 1);
         }
         //otherwise if the player is colliding with a wall on the right and presses D
         else if(Input.GetKey(KeyCode.D) && controller.collisions.right)
         {
             //the player climbs to the top of that ledge
-            Debug.Log("test climb right");
             player.transform.position += new Vector3(0.5f, 1);
         }
     }

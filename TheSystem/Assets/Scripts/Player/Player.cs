@@ -108,7 +108,6 @@ public class Player : MonoBehaviour
         if (slider.IsWallSliding)
         {
             //fall at fixed velocity
-            Debug.Log("sliding");
             velocity.y = (gravity * 25) * Time.deltaTime;
         }
         //otherwise if the player is not grabbing a ledge

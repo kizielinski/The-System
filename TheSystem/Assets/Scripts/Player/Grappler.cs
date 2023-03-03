@@ -7,15 +7,14 @@ public class Grappler : MonoBehaviour
     public Player player;
     public LineRenderer grapple;
 
-    public bool isGrappleOn;
 
     public float newPointX;
     public float newPointY;
     public float zipSpeedX;
     public float zipSpeedY;
+    Vector3 zipVector;
 
-    Vector2 newPos;
-    float distance;
+    Vector3 newPos;
 
     // Start is called before the first frame update
     void Start()
@@ -26,15 +25,12 @@ public class Grappler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if its been allowed to work
-        if (isGrappleOn)
-        {
             //if you click
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
 
                 //calculate where the new position is based on the player and direction faced
-                newPos = transform.position + new Vector3(newPointX * Mathf.Sign(player.Velocity.x), newPointY);
+                newPos = new Vector3(newPointX, newPointY);
 
 
 
@@ -42,61 +38,26 @@ public class Grappler : MonoBehaviour
                 grapple.SetPosition(0, newPos);
                 grapple.SetPosition(1, transform.position);
 
-                //calculate the distance between the player position and the new position
-                distance = Mathf.Sqrt(Mathf.Pow((transform.position.x - newPos.x), 2) + Mathf.Pow((transform.position.y - newPos.y), 2));
-
                 //draw the line renderer
                 grapple.enabled = true;
-            }
-            else if (Input.GetKeyUp(KeyCode.Mouse0))
-            {
-                //if you release mouse1 then stop drawing the line
-                grapple.enabled = false;
-            }
 
-            //if the line is being drawn
-            if (grapple.enabled)
-            {
-                //set the position
-                grapple.SetPosition(1, transform.position);
-
-                //calculate a zip vector based on position and new position
-                Vector3 zipVector = new Vector3(0, 0, 0) - transform.localPosition + (Vector3)newPos;
-
-
+                zipVector = new Vector3(0, 0, 0) - transform.localPosition + newPos;
+            //player.transform.position += new Vector3(0, 0.1f);
+            
+            player.Velocity = zipVector.normalized*10;
+            //player.Velocity += zipVector * new Vector3(zipSpeedX, zipSpeedY);
+            //Debug.Log(zipVector.normalized * 60);
                 
-
-                //if the player is grounded
-                if (player.Controller.collisions.below)
-                {
-                    //bump them up a little bit because the grapple wasnt a fan of the player being stuck to the ground
-                    player.transform.position += new Vector3(0, 0.01f);
-                }
-                //if the player has reached the new position (close enough to it)
-                if (Vector2.Distance(transform.position, newPos) < distance / 10)
-                {
-                    //set their position to the new position and zero out their velocity
-                    transform.position = newPos;
-                    player.Velocity = new Vector3(0, 0);
-                }
-                else
-                {
-                    //otherwise just keep adding velocities based on the calculated direction (zipvector)
-                    player.Velocity += new Vector3((zipSpeedX * zipVector.x * Time.deltaTime), (zipSpeedY * zipVector.y * Time.deltaTime));
-
-                    /* other possible way of zipping to point you can mess with in the y direction, 
-                     * decide which one is best
-                    velocity.y = 0;
-                    velocity.y += (1000 * zipVector.y * Time.deltaTime);
-                    */
-                }
-                //currently drawing the ray instead of the linerenderer for the sake of making sure zip rays would be correct
-                Debug.DrawRay(transform.position, zipVector);
             }
 
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            Debug.DrawRay(transform.position, zipVector);
         }
-    }
+        
 
+        
+    }
 }
 
 
