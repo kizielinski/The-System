@@ -4,59 +4,68 @@ using UnityEngine;
 
 public class Grappler : MonoBehaviour
 {
+    //reference to the player
     public Player player;
-    public LineRenderer grapple;
 
+    //public LineRenderer grapple;
 
+    //the new calculated position
+    Vector3 newPos;
+
+    //the new points the player will zip to for the calculated position
     public float newPointX;
     public float newPointY;
+
+    //the speeds of each component of the zip vector
     public float zipSpeedX;
     public float zipSpeedY;
-    Vector3 zipVector;
 
-    Vector3 newPos;
+    //the zip vector itself
+    Vector3 zipVector;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        grapple.enabled = false;
+        //make sure gapple is disabled so there's no accidental grapples
+        //grapple.enabled = false;
+        enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-            //if you click
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
 
-                //calculate where the new position is based on the player and direction faced
-                newPos = new Vector3(newPointX, newPointY);
+        //if you click
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            //deactivate bottom collision so the grapple can take effect
+            player.Controller.collisions.below = false;
+
+            //calculate where the new position is based on the player and calculated points from GrapplerPositionSet script
+            newPos = new Vector3(newPointX, newPointY);
 
 
+            //set the line positions to draw
+            //grapple.SetPosition(0, newPos);
+            //grapple.SetPosition(1, transform.position);
 
-                //set the line positions to draw
-                grapple.SetPosition(0, newPos);
-                grapple.SetPosition(1, transform.position);
+            //draw the line renderer
+           // grapple.enabled = true;
 
-                //draw the line renderer
-                grapple.enabled = true;
-
-                zipVector = new Vector3(0, 0, 0) - transform.localPosition + newPos;
-            //player.transform.position += new Vector3(0, 0.1f);
+            //calculates vector from player to specified grapple point
+            zipVector = new Vector3(0, 0, 0) - transform.localPosition + newPos;
+        
+            //shoot player in the direction of the zip vector by the x and y speeds
+            player.Velocity = new Vector3(zipVector.normalized.x * zipSpeedX, zipVector.normalized.y * zipSpeedY);
             
-            player.Velocity = zipVector.normalized*10;
-            //player.Velocity += zipVector * new Vector3(zipSpeedX, zipSpeedY);
-            //Debug.Log(zipVector.normalized * 60);
-                
-            }
+        }
 
+        //shows the zip vector
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Debug.DrawRay(transform.position, zipVector);
         }
-        
-
-        
     }
 }
 
