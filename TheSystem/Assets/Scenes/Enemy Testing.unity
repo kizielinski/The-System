@@ -536,6 +536,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drone
       objectReference: {fileID: 0}
+    - target: {fileID: 1541638945823201358, guid: 6968097c57796c54a9cc4576fee70dff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1541638946678309253, guid: 6968097c57796c54a9cc4576fee70dff, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -1240,6 +1244,10 @@ MonoBehaviour:
   moveSpeed: 8
   grapple: {fileID: 1292233400}
   isGrappleOn: 1
+  newPointX: 0
+  newPointY: 0
+  zipSpeedX: 0
+  zipSpeedY: 0
   cameraObj: {fileID: 1495173838}
 --- !u!114 &1292233404
 MonoBehaviour:

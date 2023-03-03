@@ -16,7 +16,7 @@ public class Entity : MonoBehaviour
     protected bool canTakeDamage = false;
     protected bool isMechanicTrigger = false;
     protected bool isHazard = false;
-    protected bool isAerial = false;
+    [SerializeField] protected bool isAerial = false;
 
     protected float gravity = -9.81f;
     protected float mass = 1;
@@ -32,8 +32,6 @@ public class Entity : MonoBehaviour
     protected void Start()
     {
         interactable = true;
-
-        Debug.Log(interactable);
 
         drag = Vector3.one;
         drag.z = 0;

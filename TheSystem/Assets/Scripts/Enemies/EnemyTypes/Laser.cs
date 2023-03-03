@@ -44,7 +44,6 @@ public class Laser : Enemy
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.LogWarning(collision.name);
         if (collision.name == "Player")
         {
             int x = 0;

@@ -11,6 +11,7 @@ public class FieldOfView : MonoBehaviour
     private float fov;
     private float startingAngle;
     private Vector3 origin;
+    private float viewDistance; //How far cone travels
 
     [SerializeField] private List<Collider2D> collidersToIgnore;
 
@@ -24,6 +25,7 @@ public class FieldOfView : MonoBehaviour
         origin = Vector3.zero;
         fov = 45;
         playerHit = false;
+        viewDistance = 50f;
     }
 
     public bool PlayerHitIsNow
@@ -34,12 +36,19 @@ public class FieldOfView : MonoBehaviour
         }
     }
 
+    public float ViewDistance
+    {
+        get
+        {
+            return viewDistance;
+        }
+    }
+
     private void LateUpdate()
     {
         int rayCount = 50;
         float angle = startingAngle;
         float angleIncrease = fov / rayCount;
-        float viewDistance = 50f; //How far cone travels
 
         Vector3[] vertices = new Vector3[rayCount + 1 + 1];
         Vector2[] uv = new Vector2[vertices.Length];

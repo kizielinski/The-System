@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 public class CorruptedGuard : Enemy
 {
     private FieldOfView fov;
     [SerializeField] private GameObject shield;
     private static Object prefab;
-    private bool canThrow;
+    private bool isThrowing;
+    [SerializeField] private bool isDashing;
+    private Vector3 dashPos;
+    private int throwAttackCooldown;
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +22,9 @@ public class CorruptedGuard : Enemy
         canMove = true;
         walkSpeed =5;
         healthPool = 10;
-        attackDuration = 0.5f;
-        attackCooldown = 1.0f;
+        attackDuration = 2.5f;
+        attackCooldown = 4.0f;
+        throwAttackCooldown = (int)attackCooldown/2;
 
         BoxCollider2D[] boxes = GetComponentsInChildren<BoxCollider2D>();
 
@@ -27,7 +33,7 @@ public class CorruptedGuard : Enemy
 
         pos = transform.position;
 
-        canAttack = false;
+        canAttack = true;
         attackCooldownFinished = true;
 
         isAlive = true;
@@ -39,7 +45,7 @@ public class CorruptedGuard : Enemy
 
         prefab = Resources.Load("Prefabs/Projectile");
 
-        canThrow = true;
+        isThrowing = false;
         isAerial = true;
     }
 
@@ -54,22 +60,11 @@ public class CorruptedGuard : Enemy
         fov.SetOrigin(transform.position);
         if(isAlive)
         {
-            if (fov.playerHit)
+            if (fov.playerHit && canAttack)
             {
-                Vector3 pPos = Player.instance.transform.position;
-                if (Vector3.Distance(transform.position, pPos) < 3)
-                {
-                    //Shield Bash
-                }
-                else
-                {
-                    if(canThrow)
-                    {
-                        StartCoroutine(ThrowProjectile());
-                    }
-                }
+                StartCoroutine(Attack());
             }
-            else
+            else if(attackCooldownFinished)
             {
                 Patrol();
             }
@@ -86,18 +81,76 @@ public class CorruptedGuard : Enemy
             pos += velocity * Time.deltaTime;
             transform.position = pos;
         }
-
-        
     }
 
-    private IEnumerator ThrowProjectile()
+    private void ThrowProjectile()
     {
-        canThrow = false;
-        GameObject projBomb = Instantiate(prefab) as GameObject;
+        canAttack = false;
+        GameObject projBomb = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
         Projectile p = projBomb.GetComponent<Projectile>();
         p.SetAcceleration(new Vector3(((facingRight == true ? 1 : -1) * 8), 9, 0)); //This is gross needs to be fixed
-        yield return new WaitForSeconds(3);
-        canThrow = false;
+        attackCooldown = throwAttackCooldown;
+    }
+
+    private void ShieldBash(float currentTime)
+    {    
+        //If dash has reached its destination
+        Debug.LogError("Dash Distance: " + (Vector3.Distance(pos, dashPos)));
+        Debug.LogError("Is Dashing " + isDashing);
+        Debug.LogError("Speed/Dir: " + walkSpeed);
+        Debug.LogError("Cos Value: " + cosValue);
+        Debug.LogError("Walk Direction: " + Mathf.Cos(cosValue));
+    }
+
+    protected override IEnumerator Attack()
+    {
+        Debug.LogError("ATTACK!");
+
+        float distance = Vector3.Distance(transform.position, Player.instance.transform.position);
+        canAttack = false;
+
+        //If within fov distance throw bomb
+        if (distance > 25.0f)
+        {
+            Debug.LogError("Throw");
+            ThrowProjectile();
+        }
+        else
+        {
+            Debug.LogError("Dash");
+            float currentTime = 0;
+
+            if(!isDashing)
+            {
+                //Set dash vector
+                if (facingRight)
+                {
+                    dashPos = transform.position + (Vector3.right * 30);
+                }
+                else
+                {
+                    dashPos = transform.position + (Vector3.left * 30);
+                }
+                isDashing = true;
+            }
+
+            float oldVelX = velocity.x;
+
+            while (currentTime < attackDuration)
+            {
+                velocity.x = Mathf.Lerp(transform.position.x, dashPos.x, currentTime);
+                currentTime +=  Time.deltaTime;
+                yield return null;
+            }
+
+            velocity.x = 0;
+            //SetCharacterOrientation(!facingRight);
+            isDashing = false;
+            fov.PlayerHitIsNow = false;
+        }
+
+        StartCoroutine(AttackCooldown());
+        yield return null;
     }
 
 }
