@@ -23,8 +23,8 @@ public class GrapplerPositionSet : MonoBehaviour
             grapple.enabled = true;
 
             //set the new x and y points that the player will zip to
-            grapple.newPointX = gameObject.transform.position.x;
-            grapple.newPointY = gameObject.transform.position.y;
+            grapple.PointX = gameObject.transform.position.x;
+            grapple.PointY = gameObject.transform.position.y;
         }
         //if the player exits the box collider of the hook
         else if (!PointInBoxCollider(grapple.transform.position, gameObject.GetComponent<BoxCollider2D>()) && isActive)

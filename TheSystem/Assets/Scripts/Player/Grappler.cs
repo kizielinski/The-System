@@ -13,8 +13,8 @@ public class Grappler : MonoBehaviour
     Vector3 newPos;
 
     //the new points the player will zip to for the calculated position
-    public float newPointX;
-    public float newPointY;
+    float newPointX;
+    float newPointY;
 
     //the speeds of each component of the zip vector
     public float zipSpeedX;
@@ -23,13 +23,18 @@ public class Grappler : MonoBehaviour
     //the zip vector itself
     Vector3 zipVector;
     
-
-    // Start is called before the first frame update
-    void Start()
+    //getter setter for the x point
+    public float PointX
     {
-        //make sure gapple is disabled so there's no accidental grapples
-        //grapple.enabled = false;
-        enabled = false;
+        get { return newPointX; }
+        set { newPointX = value; }
+    }
+
+    //getter setter for the x point
+    public float PointY
+    {
+        get { return newPointY; }
+        set { newPointY = value; }
     }
 
     // Update is called once per frame
