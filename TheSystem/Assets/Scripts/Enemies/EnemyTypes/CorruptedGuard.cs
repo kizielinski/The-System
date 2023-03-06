@@ -47,6 +47,7 @@ public class CorruptedGuard : Enemy
 
         isThrowing = false;
         isAerial = true;
+        isDashing = false;
     }
 
     // Update is called once per frame
@@ -67,6 +68,7 @@ public class CorruptedGuard : Enemy
             else if(attackCooldownFinished)
             {
                 Patrol();
+                fov.playerHit = false;
             }
 
             base.Update();
@@ -90,11 +92,17 @@ public class CorruptedGuard : Enemy
         Projectile p = projBomb.GetComponent<Projectile>();
         p.SetAcceleration(new Vector3(((facingRight == true ? 1 : -1) * 8), 9, 0)); //This is gross needs to be fixed
         attackCooldown = throwAttackCooldown;
+
+        StartCoroutine(AttackCooldown());
     }
 
     private IEnumerator ShieldBash()
     {
         StopCoroutine("Attack");
+
+        canAttack = false;
+        fov.playerHit = false;
+
         Debug.LogError("Dash");
         float currentTime = 0;
 
@@ -115,8 +123,6 @@ public class CorruptedGuard : Enemy
         while (Vector3.Distance(transform.position, dashPos) > 0.5f)
         {
             velocity.x += (facingRight ? 1.0f : -1.0f) * 32.0f * Time.deltaTime;
-
-            Debug.LogWarning(velocity.x);
             
             currentTime += Time.deltaTime;
             yield return null;
@@ -126,7 +132,9 @@ public class CorruptedGuard : Enemy
         SetCharacterOrientation(!facingRight);
         isDashing = false;
         fov.PlayerHitIsNow = false;
-        canAttack = true;
+        attackCooldown = throwAttackCooldown * 2;
+
+        StartCoroutine(AttackCooldown());
 
         ////If dash has reached its destination
         //Debug.LogError("Dash Distance: " + (Vector3.Distance(pos, dashPos)));
@@ -139,8 +147,8 @@ public class CorruptedGuard : Enemy
     protected override IEnumerator Attack()
     {
         Debug.LogError("ATTACK!");
-
         float distance = Vector3.Distance(transform.position, Player.instance.transform.position);
+       
         canAttack = false;
 
         //If within fov distance throw bomb
@@ -153,8 +161,6 @@ public class CorruptedGuard : Enemy
         {
             StartCoroutine(ShieldBash());
         }
-
-        StartCoroutine(AttackCooldown());
         yield return null;
     }
 

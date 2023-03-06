@@ -1066,17 +1066,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2645883431389639819, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2645883431389639825, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2645883431389639825, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.03
+      value: -79
       objectReference: {fileID: 0}
     - target: {fileID: 2645883431389639825, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.04
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 2645883431389639825, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1577,15 +1581,15 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 2
+  m_Constraints: 7
 --- !u!61 &2010222894
 BoxCollider2D:
   m_ObjectHideFlags: 0
