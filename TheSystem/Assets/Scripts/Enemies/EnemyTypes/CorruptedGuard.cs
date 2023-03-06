@@ -11,7 +11,7 @@ public class CorruptedGuard : Enemy
     private static Object prefab;
     private bool isThrowing;
     [SerializeField] private bool isDashing;
-    private Vector3 dashPos;
+    [SerializeField] private Vector3 dashPos;
     private int throwAttackCooldown;
 
     // Start is called before the first frame update
@@ -92,14 +92,48 @@ public class CorruptedGuard : Enemy
         attackCooldown = throwAttackCooldown;
     }
 
-    private void ShieldBash(float currentTime)
-    {    
-        //If dash has reached its destination
-        Debug.LogError("Dash Distance: " + (Vector3.Distance(pos, dashPos)));
-        Debug.LogError("Is Dashing " + isDashing);
-        Debug.LogError("Speed/Dir: " + walkSpeed);
-        Debug.LogError("Cos Value: " + cosValue);
-        Debug.LogError("Walk Direction: " + Mathf.Cos(cosValue));
+    private IEnumerator ShieldBash()
+    {
+        StopCoroutine("Attack");
+        Debug.LogError("Dash");
+        float currentTime = 0;
+
+        if (!isDashing)
+        {
+            //Set dash vector
+            if (facingRight)
+            {
+                dashPos = transform.position + (Vector3.right * 30);
+            }
+            else
+            {
+                dashPos = transform.position + (Vector3.left * 30);
+            }
+            isDashing = true;
+        }
+
+        while (Vector3.Distance(transform.position, dashPos) > 0.5f)
+        {
+            velocity.x += (facingRight ? 1.0f : -1.0f) * 32.0f * Time.deltaTime;
+
+            Debug.LogWarning(velocity.x);
+            
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        velocity.x = 0;
+        SetCharacterOrientation(!facingRight);
+        isDashing = false;
+        fov.PlayerHitIsNow = false;
+        canAttack = true;
+
+        ////If dash has reached its destination
+        //Debug.LogError("Dash Distance: " + (Vector3.Distance(pos, dashPos)));
+        //Debug.LogError("Is Dashing " + isDashing);
+        //Debug.LogError("Speed/Dir: " + walkSpeed);
+        //Debug.LogError("Cos Value: " + cosValue);
+        //Debug.LogError("Walk Direction: " + Mathf.Cos(cosValue));
     }
 
     protected override IEnumerator Attack()
@@ -117,36 +151,7 @@ public class CorruptedGuard : Enemy
         }
         else
         {
-            Debug.LogError("Dash");
-            float currentTime = 0;
-
-            if(!isDashing)
-            {
-                //Set dash vector
-                if (facingRight)
-                {
-                    dashPos = transform.position + (Vector3.right * 30);
-                }
-                else
-                {
-                    dashPos = transform.position + (Vector3.left * 30);
-                }
-                isDashing = true;
-            }
-
-            float oldVelX = velocity.x;
-
-            while (currentTime < attackDuration)
-            {
-                velocity.x = Mathf.Lerp(transform.position.x, dashPos.x, currentTime);
-                currentTime +=  Time.deltaTime;
-                yield return null;
-            }
-
-            velocity.x = 0;
-            //SetCharacterOrientation(!facingRight);
-            isDashing = false;
-            fov.PlayerHitIsNow = false;
+            StartCoroutine(ShieldBash());
         }
 
         StartCoroutine(AttackCooldown());

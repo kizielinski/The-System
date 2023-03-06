@@ -191,7 +191,6 @@ public class Enemy : Entity
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.LogWarning(collision.name);
         if (collision.tag == "ground")
         {
             velocity = Vector3.zero;
@@ -202,7 +201,11 @@ public class Enemy : Entity
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        isAerial = true;
+        if (collision.tag == "ground")
+        {
+            isAerial = true;
+            acceleration.y = gravity;
+        }
     }
 
     public void SetCharacterOrientation(bool facingRight)
