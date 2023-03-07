@@ -33,13 +33,22 @@ public class Drone : Enemy
     // Update is called once per frame
     void Update()
     {
-        //Cone alignment
-        fov.SetAimDirection(Vector3.down);
-        fov.SetOrigin(transform.position);
-        if (fov.playerHit)
+        base.Update();
+        if(isStunned)
         {
-            fov.PlayerHitIsNow = false;
-            StartCoroutine(Shoot());
+            isAlive = false;
+        }
+        else
+        {
+            isAlive = true;
+            //Cone alignment
+            fov.SetAimDirection(Vector3.down);
+            fov.SetOrigin(transform.position);
+            if (fov.playerHit)
+            {
+                fov.PlayerHitIsNow = false;
+                StartCoroutine(Shoot());
+            }
         }
     }
 

@@ -11,7 +11,7 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     //Every entity can be used for the following
-    protected int healthPool = 0;
+    [SerializeField] protected int healthPool = 3;
     protected bool interactable = false;
     protected bool canTakeDamage = false;
     protected bool isMechanicTrigger = false;
@@ -44,6 +44,11 @@ public class Entity : MonoBehaviour
     protected void Update()
     {
         ApplyInheritForces();
+
+        if(healthPool <=0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void ApplyInheritForces()

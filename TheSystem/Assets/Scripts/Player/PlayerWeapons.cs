@@ -6,56 +6,51 @@ public class PlayerWeapons : MonoBehaviour
 {
     [SerializeField] private GameObject weaponParent;
     private Collider2D weaponHitBox;
-    private float attackDuration = 1.0f;
+    [SerializeField] private float attackDuration = 1.0f;
 
-    private float attackCooldown;
-    private float attackCooldownTimer;
+    [SerializeField] private float attackCooldown = 3.0f;
+    [SerializeField] private float attackCooldownTimer = 0;
     private bool attackCooldownFinished;
-
     private static bool facingRight = true;
     [SerializeField] private bool canAttack = true;
+    private bool isAttacking = false;
+    //SerializeField] private int instancesOfAttack = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        attackCooldown = 3.0f;
-        attackCooldownTimer = 0;
-
         weaponHitBox = weaponParent.GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (canAttack)
         {
-            if (Input.GetKey(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 Debug.LogWarning("Swing One");
+                canAttack = false;
+                StopCoroutine(AttackCooldown());
                 StartCoroutine(Attack());
             }
         }
-        //if (Input.GetKey(KeyCode.Alpha2))
-        //{
-
-        //}
-        //if (Input.GetKey(KeyCode.Alpha3))
-        //{
-
-        //}
     }
 
+    //Handles Scrapper attacks, needs to be refined visually but works really well.
     private IEnumerator Attack()
     {
-
-        Vector2 newHitboxSize;
-
+        if(isAttacking)
+        {
+            StopCoroutine(Attack());
+        }
         canAttack = false;
         //canMove = false;
-        //isAttacking = true;
+        isAttacking = true;
+        bool firstAttack = true;
         bool secondAttack = false;
         bool thirdAttack = false;
+        bool attackOver = false;
         Transform weaponTransform = weaponParent.transform;
         BoxCollider2D weaponHitBox = weaponTransform.gameObject.GetComponent<BoxCollider2D>();
 
@@ -67,7 +62,7 @@ public class PlayerWeapons : MonoBehaviour
 
         //Orient attack direction
         float attackdirection = 0.0f;
-        if (facingRight)
+        if (Player.instance.FacingRight)
         { attackdirection = 1.0f; }
         else
         { attackdirection = -1.0f; }
@@ -84,74 +79,101 @@ public class PlayerWeapons : MonoBehaviour
 
         //Attack One - Overhead Attack
 
+        if(firstAttack)
         {
-
-        }
-
-        //while (currentTime < attackDuration)
-        //{
-        //    if (currentTime > ((2 * attackDuration) / 3) && Input.GetKey(KeyCode.Alpha1))
-        //    {
-        //        secondAttack = true;
-        //    }
-
-        //    tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime);
-        //    tempRotationFinal.eulerAngles = tempRotation;
-        //    transform.localRotation = tempRotationFinal;
-
-        //    currentTime += Time.deltaTime;
-        //    yield return null;
-        //}
-
-        Utilities.DefaultHitBox(weaponHitBox);
-
-        //currentTime = 0;
-        if(secondAttack)
-        {
-            //Setup Attack Two
-            Vector2 attackPosition = new Vector2();
-            Vector3 attackEndPos = new Vector3(1 + attackStartPosition.x, 0, 0);
-            Utilities.ScaleHitBox(weaponHitBox, new Vector2(5, 1));
-
+            firstAttack = false;
             while (currentTime < attackDuration)
             {
-                attackPosition.x = Mathf.Lerp(0, 4, currentTime * 6);
-                weaponHitBox.offset = attackPosition;
+                if (currentTime > ((2 * attackDuration) / 3) && Input.GetKey(KeyCode.Alpha1))
+                {
+                    secondAttack = true;
+                }
+
+                tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime);
+                tempRotationFinal.eulerAngles = tempRotation;
+                transform.localRotation = tempRotationFinal;
 
                 currentTime += Time.deltaTime;
                 yield return null;
             }
 
-            currentTime = 0;
-        }
-        else
-        {
-            StartCoroutine(AttackCooldown());
+            //Debug.LogWarning("First Attack Complete!");
         }
 
-        if(thirdAttack)
+        Utilities.DefaultHitBox(weaponHitBox);
+        weaponTransform.localPosition = Vector3.zero;
+        weaponHitBox.offset = Vector2.zero;
+        transform.localRotation = new Quaternion(0, 0, 0, 0);
+        currentTime = 0;
+
+        if (secondAttack)
         {
-            while (secondAttack && currentTime < attackDuration)
+            secondAttack = false;
+            //Setup Attack Two
+            Vector2 attackPosition = new Vector2();
+            float attackEndPos = attackdirection * 6;
+            Utilities.ScaleHitBox(weaponHitBox, new Vector2(5, 1));
+            attackDuration = attackDuration * 2;
+
+            while (currentTime < attackDuration)
             {
-                
+
+                if (currentTime > (attackDuration/3) && Input.GetKey(KeyCode.Alpha1))
+                {
+                    thirdAttack = true;
+                }
+
+                attackPosition.x = Mathf.Lerp(0, attackEndPos, currentTime);
+                weaponHitBox.offset = attackPosition;
+
+                currentTime += Time.deltaTime;
                 yield return null;
             }
         }
         else
         {
-            StartCoroutine(AttackCooldown());
+            attackOver = true;
         }
+
+        if (thirdAttack && !attackOver)
+        {
+            //Setup Attack Three - Overhead Attack
+            tempRotation = new Vector3();
+            tempRotationFinal = new Quaternion();
+            attackEndRotation = attackdirection * 90f;
+            weaponHitBox.offset = Vector2.zero;
+            currentTime = 0;
+            Utilities.ScaleHitBox(weaponHitBox, new Vector2(1, 5));
+            weaponTransform.localPosition = new Vector3(0, -2.5f, 0);
+            attackDuration = attackDuration / 2;
+            weaponHitBox.tag = "weapon_0_stun";
+
+            while (currentTime < attackDuration)
+            {
+                tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime);
+                tempRotationFinal.eulerAngles = tempRotation;
+                transform.localRotation = tempRotationFinal;
+
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+        }
+        else
+        {
+            attackOver = true;
+        }
+        weaponHitBox.tag = "weapon_0";
 
         //End the attack
         {
-            //Set end position
-            weaponHitBox.transform.localPosition = new Vector3(0, 6, 0);
-
-            //Set end rotation
+            //Set end position and roation
+            weaponTransform.localPosition = Vector3.zero;
+            weaponHitBox.offset = Vector2.zero;
             transform.localRotation = new Quaternion(0, 0, 0, 0);
+            Utilities.DefaultHitBox(weaponHitBox);
+            currentTime = 0;
 
-            ////isAttacking = false;
-            ////canMove = true;
+            //instancesOfAttack -= 1;
             StartCoroutine(AttackCooldown());
         }
     }

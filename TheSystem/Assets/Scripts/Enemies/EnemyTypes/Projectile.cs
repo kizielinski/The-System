@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : Entity
 {
     private Vector3 pos;
+    private float bombRange = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +58,13 @@ public class Projectile : Entity
 
     private void Explode()
     {
+        Vector3 pPos = Player.instance.GetPos;
 
+        if (Vector3.Distance(transform.position, pPos) < bombRange)
+        {
+            Player.instance.PlayerTakeDamage(Utilities.DirectionToTarget(pPos, transform.position).x, 2);
+        }
+
+        Destroy(gameObject);
     }
 }

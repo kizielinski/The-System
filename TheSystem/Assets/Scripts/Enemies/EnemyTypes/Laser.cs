@@ -6,7 +6,7 @@ public class Laser : Enemy
 {
     private BoxCollider2D damageBox;
     private float zRot;
-    private bool isStill;
+    [SerializeField] private bool isStill;
     private float laserRotationCosValue = 0f;
     [SerializeField] private float laserRotationStepValue;
     private Transform laserContainer;
@@ -40,15 +40,6 @@ public class Laser : Enemy
         if(!isStill)
         {
             RotateLaser();
-        }
-    }
-
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.name == "Player")
-        {
-            Player p = collision.GetComponent<Player>();
-            p.PlayerTakeDamage(transform.position.x, 0);
         }
     }
 
