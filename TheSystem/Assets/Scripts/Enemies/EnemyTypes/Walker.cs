@@ -34,23 +34,26 @@ public class Walker : Enemy
 
     private void FixedUpdate()
     {
-        if(canAttack) //If cooldown done, able to attack
+        if(!isStunned)
         {
-            if(PlayerInRange()) //Check range
+            if (canAttack) //If cooldown done, able to attack
             {
-                isAttacking = true;
-                StartCoroutine(Attack());
+                if (PlayerInRange()) //Check range
+                {
+                    isAttacking = true;
+                    StartCoroutine(Attack());
+                }
             }
-        }
-        else if(attackCooldownFinished) //Start a new cooldown
-        {
-            StartCoroutine(AttackCooldown());
-        }
+            else if (attackCooldownFinished) //Start a new cooldown
+            {
+                StartCoroutine(AttackCooldown());
+            }
 
-        //If not attacking walk.
-        if (!isAttacking && !PlayerInRange())
-        {
-            Walk();
+            //If not attacking walk.
+            if (!isAttacking && !PlayerInRange())
+            {
+                Walk();
+            }
         }
 
         transform.position = pos;

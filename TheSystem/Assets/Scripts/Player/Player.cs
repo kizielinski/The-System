@@ -21,15 +21,21 @@ public class Player : MonoBehaviour
     Vector3 velocity;
     float velocityXSmoothing;
 
+    //Player health
+    [SerializeField] private int playerHealthPool = 3;
+    [SerializeField] private bool playerInvincible = false;
+    [SerializeField] private float invincibilityTime = 2.0f;
+
     public bool IsDamaged
     {
         get { return isDamaged; }
         set { isDamaged = value; }
     }
 
-
-
-    
+    public bool FacingRight
+    {
+        get { return velocity.x > 0 ? true : false; }
+    }
 
 
     //velocity getter/setter
@@ -168,12 +174,25 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(PlayerKnockback(damageVector, damage));
         }
-        
+
+        if(!playerInvincible)
+        {
+            playerHealthPool -= 1;
+            StartCoroutine(IFrames());
+        }
+
         //Blah blah blah code etc.
     }
 
-    private void Attack()
+    protected virtual IEnumerator IFrames()
     {
-
+        float currentTimer = 0;
+        playerInvincible = true;
+        while (currentTimer < invincibilityTime)
+        {
+            currentTimer += Time.deltaTime;
+            yield return null;
+        }
+        playerInvincible = false;
     }
 }

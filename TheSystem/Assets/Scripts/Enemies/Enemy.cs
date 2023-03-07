@@ -35,6 +35,10 @@ public class Enemy : Entity
     [SerializeField] protected bool canAttack = false; //Checks for no cooldown on attack
     protected float attackDamage; 
     protected float attackStatusEffect;
+    private bool isInvincible;
+    [SerializeField] protected float invincibilityTime = 1.0f;
+    [SerializeField] protected bool isStunned = false;
+    [SerializeField] protected float stunTime = 4.0f;
 
     //Status
     protected bool isAlive;
@@ -189,13 +193,70 @@ public class Enemy : Entity
         return hit.collider != null;
     }
 
+    private void TakeDamage(int damage)
+    {
+        if(!isInvincible)
+        {
+            healthPool -= damage;
+            StartCoroutine(IFrames());
+        } 
+    }
+
+    protected virtual IEnumerator IFrames()
+    {
+        float currentTimer = 0;
+        isInvincible = true;
+        while (currentTimer < invincibilityTime)
+        {
+            currentTimer += Time.deltaTime;
+            yield return null;
+        }
+        isInvincible = false;
+    }
+
+    protected virtual IEnumerator Stunned()
+    {
+        float currentTimer = 0;
+        isStunned = true;
+        while (currentTimer < stunTime)
+        {
+            currentTimer += Time.deltaTime;
+            yield return null;
+        }
+        isStunned = false;
+    }
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "ground")
+        switch(collision.tag)
         {
-            velocity = Vector3.zero;
-            acceleration = Vector3.zero;
-            isAerial = false;
+            case "ground":
+                velocity = Vector3.zero;
+                acceleration = Vector3.zero;
+                isAerial = false;
+                break;
+            case "weapon_0":
+                TakeDamage(1);
+                break;
+            case "weapon_0_stun":
+
+                Debug.LogWarning("Enemy:" + gameObject.name + " Stunned!");
+
+                TakeDamage(1);
+                StartCoroutine(Stunned());
+                break;
+            case "weapon_1":
+                //stub for Solider
+                break;
+            case "weapon_2":
+                //stub for Mutant
+                break;
+            case "Player":
+                   Player.instance.PlayerTakeDamage(transform.position.x, 0);
+                break;
+            default:
+                Debug.LogError("Handled this Collision! Collision with: " + collision.tag);
+                break;
         }
     }
 

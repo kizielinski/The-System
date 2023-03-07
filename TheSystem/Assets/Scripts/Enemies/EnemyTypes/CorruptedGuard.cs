@@ -59,7 +59,7 @@ public class CorruptedGuard : Enemy
         }
         fov.SetAimDirection(facingRight == true ? Vector3.right : Vector3.left);
         fov.SetOrigin(transform.position);
-        if(isAlive)
+        if (isAlive || !isStunned)
         {
             if (fov.playerHit && canAttack)
             {
