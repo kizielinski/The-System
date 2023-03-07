@@ -10,6 +10,15 @@ public class GrapplerPositionSet : MonoBehaviour
     //check for player entering the hook shot's range
     bool isActive;
 
+    //get the spriteRenderer to change colors when in range
+    SpriteRenderer spriteRenderer;
+
+    // Set up the spriteRenderer
+    private void Start()
+    {
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -25,6 +34,9 @@ public class GrapplerPositionSet : MonoBehaviour
             //set the new x and y points that the player will zip to
             grapple.PointX = gameObject.transform.position.x;
             grapple.PointY = gameObject.transform.position.y;
+
+            //set the color of the grapple point to blue
+            spriteRenderer.color = Color.blue;
         }
         //if the player exits the box collider of the hook
         else if (!PointInBoxCollider(grapple.transform.position, gameObject.GetComponent<BoxCollider2D>()) && isActive)
@@ -32,6 +44,9 @@ public class GrapplerPositionSet : MonoBehaviour
             //diable the grapple script and secondary check
             grapple.enabled = false;
             isActive = false;
+
+            //set the color of the grapple point to white
+            spriteRenderer.color = Color.white;
         }
     }
 
