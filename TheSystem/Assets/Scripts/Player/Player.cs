@@ -171,4 +171,9 @@ public class Player : MonoBehaviour
         
         //Blah blah blah code etc.
     }
+
+    private void Attack()
+    {
+
+    }
 }

@@ -29,7 +29,8 @@ public class Laser : Enemy
         pos = transform.position;
         attackDamage = 0;
 
-        walkSpeed = 5.0f; //Resuse normal walk speed for laser rotation
+        laserRotationStepValue = 0.4f; //How far laser moves
+        walkSpeed = 10.0f; //How fast laser moves
         laserContainer = gameObject.transform.parent;
     }
 
@@ -46,7 +47,6 @@ public class Laser : Enemy
     {
         if (collision.name == "Player")
         {
-            int x = 0;
             Player p = collision.GetComponent<Player>();
             p.PlayerTakeDamage(transform.position.x, 0);
         }
