@@ -48,6 +48,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public Vector3 GetPos
+    {
+        get { return transform.position; }
+    }
+
     //controller getter
     public PlayerController Controller
     {
