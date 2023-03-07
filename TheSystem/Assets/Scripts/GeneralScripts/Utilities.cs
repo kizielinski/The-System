@@ -35,4 +35,13 @@ public class Utilities
         return Player.instance.transform.position;
     }
 
+    public static void ScaleHitBox(BoxCollider2D c, Vector2 dim)
+    {
+        c.size = dim;
+    }
+
+    public static void DefaultHitBox(BoxCollider2D c)
+    {
+        c.size = Vector2.one;
+    }
 }
