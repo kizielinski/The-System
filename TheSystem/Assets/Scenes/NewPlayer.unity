@@ -1929,6 +1929,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 292017a91c2685844afb4f6d647265e1, type: 3}
+--- !u!212 &1276968598 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 427800469032166084, guid: 292017a91c2685844afb4f6d647265e1, type: 3}
+  m_PrefabInstance: {fileID: 427800469659155689}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1357199198
 GameObject:
   m_ObjectHideFlags: 0
@@ -2916,7 +2921,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963423261}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.029999582, y: -0.04, z: -10}
+  m_LocalPosition: {x: -0.029999701, y: -0.04, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 838795383}
@@ -3265,6 +3270,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 427800469032166082, guid: 292017a91c2685844afb4f6d647265e1, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 1276968598}
     - target: {fileID: 427800469032166083, guid: 292017a91c2685844afb4f6d647265e1, type: 3}
       propertyPath: m_Name
       value: Hook Swing
@@ -3376,7 +3385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2645883431699766009, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0000004172325
+      value: 0.00000029802322
       objectReference: {fileID: 0}
     - target: {fileID: 2645883431699766009, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
       propertyPath: m_LocalPosition.y
