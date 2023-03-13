@@ -78,6 +78,11 @@ public class Player : MonoBehaviour
             instance = this;
         }
 
+        if(SpawnHandler.instance != null)
+        {
+            transform.position = SpawnHandler.instance.SpawnPoint;
+        }
+
         //gets the script
         grabber = GetComponent<LedgeGrabber>();
         slider = GetComponent<WallSlide>();
