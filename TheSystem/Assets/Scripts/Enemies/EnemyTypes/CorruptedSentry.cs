@@ -4,11 +4,7 @@
 //ends up outside of its view or attack range.
 
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using static UnityEditor.PlayerSettings;
 
 public class CorruptedSentry : Enemy
 {
