@@ -2204,10 +2204,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponParent: {fileID: 831006913}
-  attackDuration: 1
+  attackDuration: 0.2
   attackCooldown: 0
   attackCooldownTimer: 0
   canAttack: 1
+  attackSpeedMultiplier: 5
 --- !u!212 &1971533474
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2516,7 +2517,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095189513}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 55, y: -7, z: -10}
+  m_LocalPosition: {x: -17.800003, y: -7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

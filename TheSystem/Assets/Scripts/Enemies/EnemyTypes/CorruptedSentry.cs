@@ -1,6 +1,6 @@
 //Kyle Zielinski
 //2/1/2023
-//This enemy agros and dashes at the player continuig to do so until the player 
+//This enemy agros and dashes at the player continuing to do so until the player 
 //ends up outside of its view or attack range.
 
 using System.Collections;

@@ -6,7 +6,7 @@ public class PlayerWeapons : MonoBehaviour
 {
     [SerializeField] private GameObject weaponParent;
     private Collider2D weaponHitBox;
-    [SerializeField] private float attackDuration = 1.0f;
+    [SerializeField] private float attackDuration = .2f;
 
     [SerializeField] private float attackCooldown = 3.0f;
     [SerializeField] private float attackCooldownTimer = 0;
@@ -16,7 +16,7 @@ public class PlayerWeapons : MonoBehaviour
     private bool isAttacking = false;
     //SerializeField] private int instancesOfAttack = 0;
     [Tooltip("Attack Speed Multiplier. Starts at 1.0. Do not set below 0")]
-    [SerializeField] private float attackSpeedMultiplier = 1.0f; //Default one
+    [SerializeField] private float attackSpeedMultiplier = 5.0f; //Default one
 
     // Start is called before the first frame update
     void Start()
