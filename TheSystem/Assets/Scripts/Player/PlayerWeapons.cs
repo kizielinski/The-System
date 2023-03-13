@@ -15,6 +15,8 @@ public class PlayerWeapons : MonoBehaviour
     [SerializeField] private bool canAttack = true;
     private bool isAttacking = false;
     //SerializeField] private int instancesOfAttack = 0;
+    [Tooltip("Attack Speed Multiplier. Starts at 1.0. Do not set below 0")]
+    [SerializeField] private float attackSpeedMultiplier = 1.0f; //Default one
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +42,11 @@ public class PlayerWeapons : MonoBehaviour
     //Handles Scrapper attacks, needs to be refined visually but works really well.
     private IEnumerator Attack()
     {
+        if(attackSpeedMultiplier < 0)
+        {
+            attackSpeedMultiplier = 0.0001f;
+        }
+
         if(isAttacking)
         {
             StopCoroutine(Attack());
@@ -89,7 +96,7 @@ public class PlayerWeapons : MonoBehaviour
                     secondAttack = true;
                 }
 
-                tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime);
+                tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime * attackSpeedMultiplier);
                 tempRotationFinal.eulerAngles = tempRotation;
                 transform.localRotation = tempRotationFinal;
 
@@ -123,7 +130,7 @@ public class PlayerWeapons : MonoBehaviour
                     thirdAttack = true;
                 }
 
-                attackPosition.x = Mathf.Lerp(0, attackEndPos, currentTime);
+                attackPosition.x = Mathf.Lerp(0, attackEndPos, currentTime * attackSpeedMultiplier);
                 weaponHitBox.offset = attackPosition;
 
                 currentTime += Time.deltaTime;
@@ -150,7 +157,7 @@ public class PlayerWeapons : MonoBehaviour
 
             while (currentTime < attackDuration)
             {
-                tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime);
+                tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime * attackSpeedMultiplier);
                 tempRotationFinal.eulerAngles = tempRotation;
                 transform.localRotation = tempRotationFinal;
 
