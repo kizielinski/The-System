@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
         if (slider.IsWallSliding)
         {
             //fall at fixed velocity
-            velocity.y = (gravity * 40) * Time.deltaTime;
+            velocity.y = (gravity * 6) * Time.deltaTime;
         }
         //otherwise if the player is not grabbing a ledge
         else if (!grabber.IsGrabbingLedge)

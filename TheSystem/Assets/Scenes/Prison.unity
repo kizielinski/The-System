@@ -7668,6 +7668,14 @@ PrefabInstance:
       propertyPath: resetJump
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2645883431389639821, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
+      propertyPath: lowerCastEnd
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645883431389639821, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
+      propertyPath: upperCastEnd
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 2645883431389639824, guid: 2a8daa234f5a7c74b887e50a48786102, type: 3}
       propertyPath: jumpHeight
       value: 2.5

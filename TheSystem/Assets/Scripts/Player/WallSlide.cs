@@ -9,6 +9,7 @@ public class WallSlide : MonoBehaviour
     bool resetJump;
     [SerializeField]
     bool scriptIsActive;
+    bool isSliding;
 
     //getter for resetjump
     public bool ResetJump
@@ -19,7 +20,7 @@ public class WallSlide : MonoBehaviour
     //getter for wall sliding method
     public bool IsWallSliding
     {
-        get { return WallSliding(); }
+        get { return isSliding; }
     }
 
     //references to player, controller, and ledge grabber
@@ -36,6 +37,10 @@ public class WallSlide : MonoBehaviour
         ledge = GetComponent<LedgeGrabber>();
     }
 
+    private void FixedUpdate()
+    {
+        isSliding = WallSliding();
+    }
     /// <summary>
     /// checks if the player is wall sliding
     /// </summary>
