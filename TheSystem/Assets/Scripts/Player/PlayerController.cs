@@ -37,6 +37,7 @@ public class PlayerController : RaycastController
     [SerializeField] bool climbingSlope;
     [SerializeField] bool descendingSlope;
     [SerializeField] public bool spacePressed;
+    [SerializeField] public bool grabbingLedge;
 
     // The maximum angle of a slope that the player can climb
     float maxClimbAngle = 80;
@@ -45,6 +46,9 @@ public class PlayerController : RaycastController
     // Collision info struct definition
     [SerializeField] public CollisionInfo collisions;
 
+    //reference to the ledge grab script
+    LedgeGrabber grabber;
+
     /// <summary>
     /// Get's the player's collision box and calculates the ray spacing for the raycasting
     /// </summary>
@@ -52,6 +56,7 @@ public class PlayerController : RaycastController
     {
         base.Start();
 
+        grabber = GetComponent<LedgeGrabber>();
     }
 
     public void Update()
@@ -63,6 +68,7 @@ public class PlayerController : RaycastController
         climbingSlope = collisions.climbingSlope;
         descendingSlope = collisions.descendingSlope;
         spacePressed = Input.GetKey("space");
+        grabbingLedge = grabber.IsGrabbingLedge;
     }
 
     /// <summary>

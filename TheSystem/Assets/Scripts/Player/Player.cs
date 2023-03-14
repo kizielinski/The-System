@@ -62,9 +62,6 @@ public class Player : MonoBehaviour
     // Reference to the controller script
     PlayerController controller;
 
-    //reference to the ledge grab scrip
-    LedgeGrabber grabber;
-
     //reference to the wall slide script
     WallSlide slider;
 
@@ -84,7 +81,6 @@ public class Player : MonoBehaviour
         }
 
         //gets the script
-        grabber = GetComponent<LedgeGrabber>();
         slider = GetComponent<WallSlide>();
         controller = GetComponent<PlayerController>();
 
@@ -103,7 +99,7 @@ public class Player : MonoBehaviour
         // Checks if the player can perform a jump
         if (controller.spacePressed && controller.collisions.below
             || (controller.spacePressed && slider.IsWallSliding && slider.ResetJump)
-            || (controller.spacePressed && grabber.IsGrabbingLedge))
+            || (controller.spacePressed && controller.grabbingLedge))
         {
             velocity.y = jumpVelocity;
             Debug.LogWarning("Jumping");
@@ -122,20 +118,20 @@ public class Player : MonoBehaviour
             velocity.y = (gravity * 4) * Time.deltaTime;
         }
         //otherwise if the player is not grabbing a ledge
-        else if (!grabber.IsGrabbingLedge)
+        else if (!controller.grabbingLedge)
         {
             //fall normally
             velocity.y += gravity * Time.deltaTime;
         }
 
-        controller.Move(velocity * Time.deltaTime);
-
-
         // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
-        if (controller.collisions.above || controller.collisions.below || grabber.IsGrabbingLedge)
+        if ((controller.collisions.above || controller.collisions.below || controller.grabbingLedge) && !controller.spacePressed)
         {
             velocity.y = 0;
+            Debug.LogWarning("Stopped");
         }
+
+        controller.Move(velocity * Time.deltaTime);
     }
 
 

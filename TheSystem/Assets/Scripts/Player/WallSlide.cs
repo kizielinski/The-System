@@ -37,7 +37,7 @@ public class WallSlide : MonoBehaviour
         ledge = GetComponent<LedgeGrabber>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         isSliding = WallSliding();
     }

@@ -31,7 +31,7 @@ public class LedgeGrabber : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         //if you press S
         if (Input.GetKeyDown(KeyCode.S) && isGrabbingLedge)
