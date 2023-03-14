@@ -42,7 +42,7 @@ public class Grappler : MonoBehaviour
     {
 
         //if you click
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             //deactivate bottom collision so the grapple can take effect
             player.Controller.collisions.below = false;
@@ -67,7 +67,7 @@ public class Grappler : MonoBehaviour
         }
 
         //shows the zip vector
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse1))
         {
             Debug.DrawRay(transform.position, zipVector);
         }
