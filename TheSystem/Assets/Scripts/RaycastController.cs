@@ -19,7 +19,7 @@ public class RaycastController : MonoBehaviour
     public float verticalRaySpacing;
 
     // Player collision info
-    public BoxCollider2D collider;
+    BoxCollider2D collider;
 
     // Raycast struct definition
     public RaycastOrigins raycastOrigins;

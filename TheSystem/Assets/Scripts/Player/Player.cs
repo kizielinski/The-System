@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     // Calculated values based on the variables above
     float gravity;
     float jumpVelocity;
-    Vector3 velocity;
+    [SerializeField] Vector3 velocity;
     float velocityXSmoothing;
 
     //Player health
@@ -95,23 +95,18 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Handles player input
     /// </summary>
-    void Update()
+    void FixedUpdate()
     {
-        // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
-        if (controller.collisions.above || controller.collisions.below || grabber.IsGrabbingLedge)
-        {
-            velocity.y = 0;
-        }
-
         // Gets the current player axis input
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         // Checks if the player can perform a jump
-        if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below
-            || (Input.GetKeyDown(KeyCode.Space) && slider.IsWallSliding && slider.ResetJump)
-            || (Input.GetKeyDown(KeyCode.Space) && grabber.IsGrabbingLedge))
+        if (controller.spacePressed && controller.collisions.below
+            || (controller.spacePressed && slider.IsWallSliding && slider.ResetJump)
+            || (controller.spacePressed && grabber.IsGrabbingLedge))
         {
             velocity.y = jumpVelocity;
+            Debug.LogWarning("Jumping");
         }
 
         // Smooths out horizontal movement
@@ -124,7 +119,7 @@ public class Player : MonoBehaviour
         if (slider.IsWallSliding)
         {
             //fall at fixed velocity
-            velocity.y = (gravity * 40) * Time.deltaTime;
+            velocity.y = (gravity * 4) * Time.deltaTime;
         }
         //otherwise if the player is not grabbing a ledge
         else if (!grabber.IsGrabbingLedge)
@@ -136,7 +131,11 @@ public class Player : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
 
 
-
+        // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
+        if (controller.collisions.above || controller.collisions.below || grabber.IsGrabbingLedge)
+        {
+            velocity.y = 0;
+        }
     }
 
 

@@ -5,12 +5,45 @@ using UnityEngine;
 //test commit
 public class PlayerController : RaycastController
 {
+    /// <summary>
+    /// Keeps tracks of the current collision states
+    /// </summary>
+    public struct CollisionInfo
+    {
+        [SerializeField] public bool above, below;
+        [SerializeField] public bool left, right;
+
+        public bool climbingSlope;
+        public bool descendingSlope;
+        public float slopeAngle, slopeAngleOld;
+        public Vector3 velocityOld;
+
+        public void Reset()
+        {
+            above = below = false;
+            left = right = false;
+            climbingSlope = false;
+            descendingSlope = false;
+
+            slopeAngleOld = slopeAngle;
+            slopeAngle = 0;
+        }
+    }
+
+    [SerializeField] bool above;
+    [SerializeField] bool below;
+    [SerializeField] bool left;
+    [SerializeField] bool right;
+    [SerializeField] bool climbingSlope;
+    [SerializeField] bool descendingSlope;
+    [SerializeField] public bool spacePressed;
+
     // The maximum angle of a slope that the player can climb
     float maxClimbAngle = 80;
     float maxDescendAngle = 75;
 
     // Collision info struct definition
-    public CollisionInfo collisions;
+    [SerializeField] public CollisionInfo collisions;
 
     /// <summary>
     /// Get's the player's collision box and calculates the ray spacing for the raycasting
@@ -19,6 +52,17 @@ public class PlayerController : RaycastController
     {
         base.Start();
 
+    }
+
+    public void Update()
+    {
+        above = collisions.above;
+        below = collisions.below;
+        left = collisions.left;
+        right = collisions.right;
+        climbingSlope = collisions.climbingSlope;
+        descendingSlope = collisions.descendingSlope;
+        spacePressed = Input.GetKey("space");
     }
 
     /// <summary>
@@ -253,31 +297,6 @@ public class PlayerController : RaycastController
                     }
                 }
             }
-        }
-    }
-
-    /// <summary>
-    /// Keeps tracks of the current collision states
-    /// </summary>
-    public struct CollisionInfo
-    {
-        public bool above, below;
-        public bool left, right;
-
-        public bool climbingSlope;
-        public bool descendingSlope;
-        public float slopeAngle, slopeAngleOld;
-        public Vector3 velocityOld;
-
-        public void Reset()
-        {
-            above = below = false;
-            left = right = false;
-            climbingSlope = false;
-            descendingSlope = false;
-
-            slopeAngleOld = slopeAngle;
-            slopeAngle = 0;
         }
     }
 }
