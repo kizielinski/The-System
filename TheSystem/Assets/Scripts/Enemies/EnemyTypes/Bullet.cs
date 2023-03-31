@@ -29,6 +29,9 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        gameObject.SetActive(false);
+        if (collision.tag == "ground" || collision.tag == "Player")
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
