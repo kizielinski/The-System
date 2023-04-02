@@ -47,6 +47,8 @@ public class GrapplerPositionSet : MonoBehaviour
 
             //set the color of the grapple point to white
             spriteRenderer.color = Color.white;
+
+            grapple.grapple.enabled = false;
         }
     }
 

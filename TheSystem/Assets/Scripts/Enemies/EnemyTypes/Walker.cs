@@ -52,9 +52,15 @@ public class Walker : Enemy
             if (!isAttacking && !PlayerInRange())
             {
                 Walk();
+
+                if (isAerial)
+                {
+                    velocity += acceleration * Time.deltaTime;
+                }
             }
         }
 
+        pos += velocity * Time.deltaTime;
         transform.position = pos;
     }
 
