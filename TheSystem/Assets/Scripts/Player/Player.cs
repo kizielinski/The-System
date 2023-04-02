@@ -157,7 +157,7 @@ public class Player : MonoBehaviour
         float valueMS = moveSpeed;
         moveSpeed = 0;
 
-        float directionKnockback = (attackDirectionVector > 0) ? -1 : 1;
+        float directionKnockback = (attackDirectionVector > 0) ? 1 : -1;
 
         if (damage <= 0)
         {
@@ -186,6 +186,7 @@ public class Player : MonoBehaviour
         //Knockback stuff
         if(!isDamaged)
         {
+            Debug.LogWarning("Damage player this way: " + damageVector);
             StartCoroutine(PlayerKnockback(damageVector, damage));
         }
 

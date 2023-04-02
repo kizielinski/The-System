@@ -253,7 +253,7 @@ public class Enemy : Entity
                 //stub for Mutant
                 break;
             case "Player":
-                   Player.instance.PlayerTakeDamage(transform.position.x, 0);
+                   Player.instance.PlayerTakeDamage(facingRight? 1 : -1, 0);
                 break;
             default:
                 Debug.LogError("Handled this Collision! Collision with: " + collision.name);
