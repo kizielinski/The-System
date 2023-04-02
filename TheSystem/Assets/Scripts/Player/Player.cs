@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
         // Smooths out horizontal movement
         float targetVelocityX = input.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
-        if(velocity.x < 0.5)
+        if(velocity.x < 0.05)
         {
             facingRight = false;
         }
