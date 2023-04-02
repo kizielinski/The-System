@@ -30,7 +30,7 @@ public class Laser : Enemy
         attackDamage = 0;
 
         laserRotationStepValue = 0.4f; //How far laser moves
-        walkSpeed = 10.0f; //How fast laser moves
+        walkSpeed = 0.0f; //How fast laser moves
         laserContainer = gameObject.transform.parent;
     }
 
