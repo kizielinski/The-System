@@ -22,7 +22,7 @@ public class Drone : Enemy
         fov = GetComponent<FieldOfView>();
         isAlive = true;
         StartCoroutine(Hover());
-        walkSpeed = 20;
+        walkSpeed = 5;
         stepValue = 0.5f;
 
         bulletPrefab = Resources.Load("Prefabs/Bullet");
