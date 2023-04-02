@@ -22,7 +22,6 @@ public class Enemy : Entity
 
 
     protected BoxCollider2D collisionBox;
-    protected BoxCollider2D attackRange;
     protected float viewRange;
     protected Vector3 pos;
 
@@ -39,6 +38,7 @@ public class Enemy : Entity
     [SerializeField] protected float invincibilityTime = 1.0f;
     [SerializeField] protected bool isStunned = false;
     [SerializeField] protected float stunTime = 4.0f;
+    [SerializeField] protected float attackRange = 1.25f;
 
     //Status
     protected bool isAlive;
@@ -167,11 +167,11 @@ public class Enemy : Entity
         RaycastHit2D hit;
         if (facingRight)
         {
-            hit = Physics2D.Raycast(attackRange.bounds.center + new Vector3(.5f, 0, 0), Vector2.right, attackRange.bounds.extents.x - .5f, playerLayerMask);
+            hit = Physics2D.Raycast(transform.position + new Vector3(.5f, 0, 0), Vector2.right, attackRange, playerLayerMask);
         }
         else
         {
-            hit = Physics2D.Raycast(attackRange.bounds.center + new Vector3(-.5f, 0, 0), Vector2.left, attackRange.bounds.extents.x - .5f, playerLayerMask);
+            hit = Physics2D.Raycast(transform.position + new Vector3(-.5f, 0, 0), Vector2.left, attackRange, playerLayerMask);
         }
         Color rayColor;
         if (hit.collider != null)
@@ -184,11 +184,11 @@ public class Enemy : Entity
         }
         if (facingRight)
         {
-            Debug.DrawRay(attackRange.bounds.center + new Vector3(.5f, 0, 0), Vector2.right * (attackRange.bounds.extents.x - .5f + .01f), rayColor);
+            Debug.DrawRay(transform.position + new Vector3(.5f, 0, 0), Vector2.right * (attackRange + .01f), rayColor);
         }
         else
         {
-            Debug.DrawRay(attackRange.bounds.center + new Vector3(-.5f, 0, 0), Vector2.left * (attackRange.bounds.extents.x - .5f + .01f), rayColor);
+            Debug.DrawRay(transform.position + new Vector3(-.5f, 0, 0), Vector2.left * (attackRange + .01f), rayColor);
         }
         return hit.collider != null;
     }
@@ -228,6 +228,7 @@ public class Enemy : Entity
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.LogWarning(collision.tag);
         switch(collision.tag)
         {
             case "ground":
@@ -255,7 +256,7 @@ public class Enemy : Entity
                    Player.instance.PlayerTakeDamage(transform.position.x, 0);
                 break;
             default:
-                Debug.LogError("Handled this Collision! Collision with: " + collision.tag);
+                Debug.LogError("Handled this Collision! Collision with: " + collision.name);
                 break;
         }
     }

@@ -18,8 +18,7 @@ public class OverheadWalker : Enemy
         BoxCollider2D[] boxes = GetComponentsInChildren<BoxCollider2D>();
 
         collisionBox = boxes[0];
-        attackRange = boxes[1];
-        damageBox = boxes[2];
+        damageBox = boxes[1];
 
         pos = transform.position;
     }
