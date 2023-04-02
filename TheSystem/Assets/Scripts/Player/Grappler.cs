@@ -7,7 +7,7 @@ public class Grappler : MonoBehaviour
     //reference to the player
     public Player player;
 
-    //public LineRenderer grapple;
+    public LineRenderer grapple;
 
     //the new calculated position
     Vector3 newPos;
@@ -36,40 +36,47 @@ public class Grappler : MonoBehaviour
         get { return newPointY; }
         set { newPointY = value; }
     }
-
+    private void Start()
+    {
+        grapple.SetPosition(0, transform.position);
+        grapple.SetPosition(1, transform.position);
+    }
     // Update is called once per frame
     void Update()
     {
+        
 
         //if you click
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
+            //make it visible
+            grapple.enabled = true;
+
             //deactivate bottom collision so the grapple can take effect
             player.Controller.collisions.below = false;
 
             //calculate where the new position is based on the player and calculated points from GrapplerPositionSet script
             newPos = new Vector3(newPointX, newPointY);
 
-
-            //set the line positions to draw
-            //grapple.SetPosition(0, newPos);
-            //grapple.SetPosition(1, transform.position);
-
-            //draw the line renderer
-           // grapple.enabled = true;
-
             //calculates vector from player to specified grapple point
-            zipVector = new Vector3(0, 0, 0) - transform.localPosition + newPos;
+            zipVector = Vector3.zero - transform.localPosition + newPos;
         
             //shoot player in the direction of the zip vector by the x and y speeds
             player.Velocity = new Vector3(zipVector.normalized.x * zipSpeedX, zipVector.normalized.y * zipSpeedY);
             
         }
+        if(Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            //deactivate the line renderer
+            grapple.enabled = false;
+        }
 
         //shows the zip vector
         if (Input.GetKey(KeyCode.Mouse1))
         {
-            Debug.DrawRay(transform.position, zipVector);
+            //set the line positions to draw
+            grapple.SetPosition(0, newPos);
+            grapple.SetPosition(1, transform.position);
         }
     }
 }

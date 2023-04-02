@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = 8;
     private float knockBackTime = 0.750f;
     private bool isDamaged = false;
-
+    private bool isFacingRight = true;
     // Calculated values based on the variables above
     float gravity;
     float jumpVelocity;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
     public bool FacingRight
     {
-        get { return velocity.x > 0 ? true : false; }
+        get { return isFacingRight; }
     }
 
 
@@ -132,6 +132,16 @@ public class Player : MonoBehaviour
         }
 
         controller.Move(velocity * Time.deltaTime);
+
+        //we live in a society
+        if (velocity.x < -0.05)
+        {
+            isFacingRight = false;
+        }
+        else if (velocity.x > 0.05)
+        {
+            isFacingRight = true;
+        }
     }
 
 
