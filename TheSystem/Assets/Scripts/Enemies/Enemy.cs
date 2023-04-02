@@ -39,6 +39,9 @@ public class Enemy : Entity
     [SerializeField] protected bool isStunned = false;
     [SerializeField] protected float stunTime = 4.0f;
     [SerializeField] protected float attackRange = 1.25f;
+    [SerializeField] protected float knockBackTime = 1.0f;
+    [SerializeField] protected float knockBackX = 30.0f;
+    [SerializeField] protected float knockBackY = 10.0f;
 
     //Status
     protected bool isAlive;
@@ -226,6 +229,29 @@ public class Enemy : Entity
         isStunned = false;
     }
 
+    /// <summary>
+    /// Handles enemy knockback from taking damage or hitting an enviroment hazard
+    /// </summary>
+    /// <param name="attackDirectionVector">
+    /// Vector passed in from enemy so orientation can be ascertained.
+    /// </param>
+    /// <returns></returns>
+    private IEnumerator TakeKnockback()
+    {
+        isDamaged = true;
+
+        float directionKnockback = Player.instance.FacingRight? 1 : -1;
+
+        Vector3 knockBack = new Vector3(directionKnockback * knockBackX, knockBackY, 0);
+
+        //Knockback Code
+        velocity = knockBack;
+
+        yield return new WaitForSeconds(knockBackTime);
+
+        isDamaged = false;
+    }
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.LogWarning(collision.tag);
@@ -238,6 +264,7 @@ public class Enemy : Entity
                 break;
             case "weapon_0":
                 TakeDamage(1);
+                StartCoroutine(TakeKnockback());
                 break;
             case "weapon_0_stun":
 
