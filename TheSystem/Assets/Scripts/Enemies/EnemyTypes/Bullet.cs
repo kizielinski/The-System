@@ -29,8 +29,14 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.LogWarning(collision.tag);
+
         if (collision.tag == "ground" || collision.tag == "Player")
         {
+            if(collision.tag == "Player")
+            {
+                Player.instance.PlayerTakeDamage(Utilities.DirectionToTarget(collision.transform.position, transform.position).x, 1);
+            }
             gameObject.SetActive(false);
         }
     }
