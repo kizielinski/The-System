@@ -2,6 +2,7 @@
 //2/10/2023
 //This script handles a FOV cone for player/enemies, will also be upgraded to allow more variability.
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
@@ -102,6 +103,10 @@ public class FieldOfView : MonoBehaviour
         mesh.vertices = vertices;
         mesh.uv = uv;
         mesh.triangles = triangles;
+
+        Color32[] colors = new Color32[vertices.Length];
+        colors[0] = new Color32(40, 40, 40, 40);
+        mesh.colors32 = colors;
     }
 
     //Sets fov origin to gameobjects current location or other input
