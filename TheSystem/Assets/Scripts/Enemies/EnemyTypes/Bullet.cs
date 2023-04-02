@@ -40,4 +40,14 @@ public class Bullet : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.LogWarning(collision.transform.tag);
+
+        if (collision.transform.tag == "ground")
+        {
+            gameObject.SetActive(false);
+        }
+    }
 }
