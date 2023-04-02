@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
         if ((controller.collisions.above || controller.collisions.below || controller.grabbingLedge) && !controller.spacePressed)
         {
             velocity.y = 0;
-            Debug.LogWarning("Stopped");
+            //Debug.LogWarning("Stopped");
         }
 
         controller.Move(velocity * Time.deltaTime);

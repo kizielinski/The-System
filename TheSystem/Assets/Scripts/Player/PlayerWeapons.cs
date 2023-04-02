@@ -29,7 +29,7 @@ public class PlayerWeapons : MonoBehaviour
     {
         if (canAttack)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 Debug.LogWarning("Swing One");
                 canAttack = false;
@@ -91,7 +91,7 @@ public class PlayerWeapons : MonoBehaviour
             firstAttack = false;
             while (currentTime < attackDuration)
             {
-                if (currentTime > ((2 * attackDuration) / 3) && Input.GetKey(KeyCode.Alpha1))
+                if (currentTime > ((2 * attackDuration) / 3) && Input.GetKey(KeyCode.Mouse0))
                 {
                     secondAttack = true;
                 }
@@ -125,7 +125,7 @@ public class PlayerWeapons : MonoBehaviour
             while (currentTime < attackDuration)
             {
 
-                if (currentTime > (attackDuration/3) && Input.GetKey(KeyCode.Alpha1))
+                if (currentTime > (attackDuration/3) && Input.GetKey(KeyCode.Mouse0))
                 {
                     thirdAttack = true;
                 }
