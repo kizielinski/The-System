@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ShowText : MonoBehaviour
 {
+    //variables for the player, the box collider of this object, and text mesh
     [SerializeField] Player player;
     [SerializeField] BoxCollider2D thisBox;
     private TextMesh thisMesh;
@@ -11,6 +12,7 @@ public class ShowText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //instantiates the text mesh and sets the alpha to zero
         thisMesh = gameObject.GetComponent<TextMesh>();
         thisMesh.color = new Color(255, 255, 255, 0);
     }
@@ -18,12 +20,15 @@ public class ShowText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //while the player is inside of the collision box for the text mesh
         if(PointInBoxCollider(player.transform.position, thisBox))
         {
+            //the text fades in
             thisMesh.color = new Color(255, 255, 255, thisMesh.color.a + Time.deltaTime);
         }
         else
         {
+            //otherwise the text fades out
             gameObject.GetComponent<TextMesh>().color = new Color(255, 255, 255, thisMesh.color.a - Time.deltaTime);
         }
     }

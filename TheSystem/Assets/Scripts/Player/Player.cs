@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = 8;
     private float knockBackTime = 0.750f;
     private bool isDamaged = false;
+    [SerializeField] bool facingRight = true;
 
     // Calculated values based on the variables above
     float gravity;
@@ -34,7 +35,7 @@ public class Player : MonoBehaviour
 
     public bool FacingRight
     {
-        get { return velocity.x > 0 ? true : false; }
+        get { return facingRight; }
     }
 
 
@@ -108,6 +109,14 @@ public class Player : MonoBehaviour
         // Smooths out horizontal movement
         float targetVelocityX = input.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+        if(velocity.x < 0.5)
+        {
+            facingRight = false;
+        }
+        else if(velocity.x > .05)
+        {
+            facingRight = true;
+        }
 
         // Updates the player's velocity
 

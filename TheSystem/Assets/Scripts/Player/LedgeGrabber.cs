@@ -25,7 +25,6 @@ public class LedgeGrabber : MonoBehaviour
     private bool isGrabbingLedge;
 
     public BoxCollider2D ledgeChecker;
-    private int flipChecker;
     //getter
     public bool IsGrabbingLedge
     {
