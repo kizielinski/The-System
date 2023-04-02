@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
+using UnityEngine.UIElements;
 
 public class PlayerWeapons : MonoBehaviour
 {
     [SerializeField] private GameObject weaponParent;
     private Collider2D weaponHitBox;
-    [SerializeField] private float attackDuration = .2f;
+    [SerializeField] private float attackDuration_1 = 1.0f;
+    [SerializeField] private float attackDuration_2 = 1.0f;
+    [SerializeField] private float attackDuration_3 = 1.0f;
+
+    [Tooltip("Attack Speed Multiplier. Starts at 1.0. Do not set below 0")]
+    [SerializeField] private float attackSpeedMultiplier = 5.0f; //Default one
 
     [SerializeField] private float attackCooldown = 3.0f;
     [SerializeField] private float attackCooldownTimer = 0;
@@ -15,8 +22,6 @@ public class PlayerWeapons : MonoBehaviour
     [SerializeField] private bool canAttack = true;
     private bool isAttacking = false;
     //SerializeField] private int instancesOfAttack = 0;
-    [Tooltip("Attack Speed Multiplier. Starts at 1.0. Do not set below 0")]
-    [SerializeField] private float attackSpeedMultiplier = 5.0f; //Default one
 
     // Start is called before the first frame update
     void Start()
@@ -81,7 +86,7 @@ public class PlayerWeapons : MonoBehaviour
         Quaternion tempRotationFinal = new Quaternion();
         float attackEndRotation = attackdirection * -90f;
         float currentTime = 0;
-        Utilities.ScaleHitBox(weaponHitBox, new Vector2(1, 5));
+        Utilities.ScaleHitBox(weaponHitBox, new Vector2(1, 4));
         weaponTransform.localPosition += new Vector3(0, 2.5f, 0);
 
         //Attack One - Overhead Attack
@@ -89,9 +94,9 @@ public class PlayerWeapons : MonoBehaviour
         if(firstAttack)
         {
             firstAttack = false;
-            while (currentTime < attackDuration)
+            while (currentTime < attackDuration_1)
             {
-                if (currentTime > ((2 * attackDuration) / 3) && Input.GetKey(KeyCode.Mouse0))
+                if (currentTime > ((2 * attackDuration_1) / 3) && Input.GetKey(KeyCode.Mouse0))
                 {
                     secondAttack = true;
                 }
@@ -104,38 +109,35 @@ public class PlayerWeapons : MonoBehaviour
                 yield return null;
             }
 
-            //Debug.LogWarning("First Attack Complete!");
-        }
+            Debug.LogWarning("First Attack Complete!");
 
-        Utilities.DefaultHitBox(weaponHitBox);
-        weaponTransform.localPosition = Vector3.zero;
-        weaponHitBox.offset = Vector2.zero;
-        transform.localRotation = new Quaternion(0, 0, 0, 0);
-        currentTime = 0;
+            Utilities.DefaultHitBox(weaponHitBox);
+            weaponTransform.localPosition = Vector3.zero;
+            weaponHitBox.offset = Vector2.zero;
+            currentTime = 0;
+        }
 
         if (secondAttack)
         {
             secondAttack = false;
             //Setup Attack Two
-            Vector2 attackPosition = new Vector2();
-            float attackEndPos = attackdirection * 6;
-            Utilities.ScaleHitBox(weaponHitBox, new Vector2(5, 1));
-            attackDuration = attackDuration * 2;
-
-            while (currentTime < attackDuration)
+            Vector3 attackPosition = new Vector3();
+            float attackEndPos = attackdirection * 2;
+            Utilities.ScaleHitBox(weaponHitBox, new Vector2(1, 5));
+            while (currentTime < attackDuration_2)
             {
-
-                if (currentTime > (attackDuration/3) && Input.GetKey(KeyCode.Mouse0))
+                if (currentTime > (attackDuration_2 / 3) && Input.GetKey(KeyCode.Mouse0))
                 {
                     thirdAttack = true;
                 }
 
                 attackPosition.x = Mathf.Lerp(0, attackEndPos, currentTime * attackSpeedMultiplier);
-                weaponHitBox.offset = attackPosition;
+                weaponTransform.position = weaponTransform.position + (attackPosition * Time.deltaTime);
 
                 currentTime += Time.deltaTime;
                 yield return null;
             }
+            Debug.LogWarning("Second Attack");
         }
         else
         {
@@ -152,10 +154,9 @@ public class PlayerWeapons : MonoBehaviour
             currentTime = 0;
             Utilities.ScaleHitBox(weaponHitBox, new Vector2(1, 5));
             weaponTransform.localPosition = new Vector3(0, -2.5f, 0);
-            attackDuration = attackDuration / 2;
             weaponHitBox.tag = "weapon_0_stun";
 
-            while (currentTime < attackDuration)
+            while (currentTime < attackDuration_3)
             {
                 tempRotation.z = Mathf.Lerp(attackRotation.eulerAngles.z, attackEndRotation, currentTime * attackSpeedMultiplier);
                 tempRotationFinal.eulerAngles = tempRotation;
@@ -164,6 +165,7 @@ public class PlayerWeapons : MonoBehaviour
                 currentTime += Time.deltaTime;
                 yield return null;
             }
+            Debug.LogWarning("Third Attack");
         }
         else
         {
