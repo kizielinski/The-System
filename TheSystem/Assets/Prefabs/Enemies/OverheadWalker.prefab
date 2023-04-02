@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4215692628200859966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 3, y: 1.5, z: 1}
+  m_LocalPosition: {x: -0.0065, y: 0.0589, z: 0}
+  m_LocalScale: {x: 0.29705068, y: 0.14515686, z: 1}
   m_Children: []
   m_Father: {fileID: 4215692629965524713}
   m_RootOrder: 0
@@ -45,18 +45,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0063767433, y: -0.02551651}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.16}
+  m_Size: {x: 1.9962106, y: 1.9461496}
   m_EdgeRadius: 0
 --- !u!212 &4215692628200859963
 SpriteRenderer:
@@ -281,6 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b0e3068e909b642a6ebe25673ebee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthPool: 3
+  isAerial: 0
   platformLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -289,3 +291,12 @@ MonoBehaviour:
     m_Bits: 128
   facingRight: 0
   walkSpeed: 0
+  attackDuration: 0
+  attackCooldown: 0
+  attackCooldownTimer: 0
+  attackCooldownFinished: 0
+  isAttacking: 0
+  canAttack: 0
+  invincibilityTime: 1
+  isStunned: 0
+  stunTime: 4
