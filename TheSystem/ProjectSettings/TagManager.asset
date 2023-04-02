@@ -8,6 +8,7 @@ TagManager:
   - Hook
   - weapon_0
   - weapon_0_stun
+  - enemy_attackRange
   layers:
   - Default
   - TransparentFX
