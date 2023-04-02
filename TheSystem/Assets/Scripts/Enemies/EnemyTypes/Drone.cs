@@ -19,7 +19,7 @@ public class Drone : Enemy
 
     void Start()
     {
-        fov = GetComponent<FieldOfView>();
+        fov = GetComponentInChildren<FieldOfView>();
         isAlive = true;
         StartCoroutine(Hover());
         walkSpeed = 5;
