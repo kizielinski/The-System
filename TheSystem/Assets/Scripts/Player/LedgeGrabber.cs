@@ -24,6 +24,8 @@ public class LedgeGrabber : MonoBehaviour
     //if the player can grab the ledge
     private bool isGrabbingLedge;
 
+    public BoxCollider2D ledgeChecker;
+    private int flipChecker;
     //getter
     public bool IsGrabbingLedge
     {
@@ -33,6 +35,15 @@ public class LedgeGrabber : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(player.FacingRight)
+        {
+            ledgeChecker.transform.position = new Vector3(player.transform.position.x + 0.8f, ledgeChecker.transform.position.y, ledgeChecker.transform.position.z);
+        }
+        else
+        {
+            ledgeChecker.transform.position = new Vector3(player.transform.position.x - 0.8f, ledgeChecker.transform.position.y, ledgeChecker.transform.position.z);
+        }
+        
         //if you press S
         if (Input.GetKeyDown(KeyCode.S) && isGrabbingLedge)
         {
@@ -103,13 +114,13 @@ public class LedgeGrabber : MonoBehaviour
     public void ClimbLedge()
     {
         //if the player is colliding with a wall on the left and they press A
-        if(Input.GetKey(KeyCode.A) && controller.collisions.left)
+        if(Input.GetKey(KeyCode.A) && controller.collisions.left && !ledgeChecker.IsTouchingLayers(platformLayer))
         {
             //the player climbs to the top of that ledge
             player.transform.position += new Vector3(-0.5f, 1);
         }
         //otherwise if the player is colliding with a wall on the right and presses D
-        else if(Input.GetKey(KeyCode.D) && controller.collisions.right)
+        else if(Input.GetKey(KeyCode.D) && controller.collisions.right && !ledgeChecker.IsTouchingLayers(platformLayer))
         {
             //the player climbs to the top of that ledge
             player.transform.position += new Vector3(0.5f, 1);
