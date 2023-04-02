@@ -31,7 +31,7 @@ public class PlayerWeapons : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                Debug.LogWarning("Swing One");
+                //Debug.LogWarning("Swing One");
                 canAttack = false;
                 StopCoroutine(AttackCooldown());
                 StartCoroutine(Attack());
