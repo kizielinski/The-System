@@ -15,8 +15,8 @@ public class Walker : Enemy
         //Default value for Enemy
         canTakeDamage = true;
         canMove = true;
-        walkSpeed = 1;
-        healthPool = 10;
+        walkSpeed = 2f;
+        healthPool = 4;
         attackDuration = 0.5f;
         attackCooldown = 1.0f;
 
