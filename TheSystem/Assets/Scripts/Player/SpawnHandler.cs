@@ -9,6 +9,7 @@ public class SpawnHandler : MonoBehaviour
 {
     //Required list of spawnPoints (min one)
     [SerializeField] List<Campfire> spawnPoints;
+    [SerializeField] bool useSaveFile;
     Campfire spawnCampfire;
     private Vector3 spawnPoint;
     public static SpawnHandler instance;
@@ -48,7 +49,7 @@ public class SpawnHandler : MonoBehaviour
 
         //If data exists, load it
         Debug.Log(System.IO.File.Exists(Application.persistentDataPath + "\\saves\\saves.ai"));
-        if (System.IO.File.Exists(Application.persistentDataPath + "\\saves\\saves.ai"))
+        if (System.IO.File.Exists(Application.persistentDataPath + "\\saves\\saves.ai") && useSaveFile)
         {
             LoadData();
         }
@@ -68,6 +69,7 @@ public class SpawnHandler : MonoBehaviour
             if(!existsActiveSavePoint)
             {
                 spawnPoints[0].IsActiveSavePoint = true;
+                spawnCampfire = spawnPoints[0];
             }
         }
 
@@ -139,5 +141,10 @@ public class SpawnHandler : MonoBehaviour
 
         binaryInputStream.Close();
         Debug.LogWarning("Loading complete...");
+    }
+
+    public void RespawnPlayer()
+    {
+        Player.instance.transform.position = spawnCampfire.transform.position;
     }
 }

@@ -20,9 +20,12 @@ public class Player : MonoBehaviour
     float jumpVelocity;
     [SerializeField] Vector3 velocity;
     float velocityXSmoothing;
+    private InventoryManager inventoryManager;
+    [SerializeField] private bool inventoryActive = false;
 
     //Player health
     [SerializeField] private int playerHealthPool = 3;
+    [SerializeField] private DisplayPlayerHealth dph;
     [SerializeField] private bool playerInvincible = false;
     [SerializeField] private float invincibilityTime = 2.0f;
 
@@ -80,6 +83,16 @@ public class Player : MonoBehaviour
             transform.position = SpawnHandler.instance.SpawnPoint;
         }
 
+        if(inventoryManager == null && inventoryActive)
+        {
+            inventoryManager = GameObject.FindGameObjectWithTag("inventory").GetComponent<InventoryManager>();
+        }
+
+        if(dph == null)
+        {
+            Debug.LogWarning("Make sure to assign the UI Health to player!");
+        }
+
         //gets the script
         slider = GetComponent<WallSlide>();
         controller = GetComponent<PlayerController>();
@@ -93,6 +106,22 @@ public class Player : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        if(Input.GetKeyDown(KeyCode.Escape) && inventoryManager)
+        {
+            if(!inventoryActive)
+            {
+                inventoryManager.ShowInventory();
+                inventoryActive = !inventoryActive;
+            }
+            else
+            {
+                inventoryManager.HideInventory();
+                inventoryActive = !inventoryActive;
+            }
+            
+        }
+
+
         // Gets the current player axis input
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
@@ -194,6 +223,19 @@ public class Player : MonoBehaviour
         if(!playerInvincible)
         {
             playerHealthPool -= 1;
+            if(dph)
+            {
+                dph.TakeUIDamage();
+            }
+
+            if(playerHealthPool <= 0)
+            {
+                SpawnHandler.instance.RespawnPlayer();
+                if(dph)
+                {
+                    dph.UIRespawn();
+                }
+            }
             StartCoroutine(IFrames());
         }
 
