@@ -12,7 +12,6 @@ public class PlayerController : RaycastController
     {
         [SerializeField] public bool above, below;
         [SerializeField] public bool left, right;
-
         public bool climbingSlope;
         public bool descendingSlope;
         public float slopeAngle, slopeAngleOld;
@@ -39,6 +38,9 @@ public class PlayerController : RaycastController
     [SerializeField] public bool spacePressed;
     [SerializeField] public bool grabbingLedge;
 
+    [SerializeField] private bool inventoryActive = false;
+    private InventoryManager inventoryManager;
+
     // The maximum angle of a slope that the player can climb
     float maxClimbAngle = 80;
     float maxDescendAngle = 75;
@@ -57,10 +59,38 @@ public class PlayerController : RaycastController
         base.Start();
 
         grabber = GetComponent<LedgeGrabber>();
+
+        if (inventoryManager == null && inventoryActive)
+        {
+            try
+            {
+                inventoryManager = GameObject.FindGameObjectWithTag("inventory").GetComponent<InventoryManager>();
+            }
+            catch
+            {
+                Debug.LogError("Couldn't Find Inventory");
+            }
+        }
     }
 
     public void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Escape) && inventoryManager)
+        {
+            if (!inventoryActive)
+            {
+                inventoryManager.ShowInventory();
+                inventoryActive = !inventoryActive;
+            }
+            else
+            {
+                inventoryManager.HideInventory();
+                inventoryActive = !inventoryActive;
+            }
+
+        }
+
         above = collisions.above;
         below = collisions.below;
         left = collisions.left;
