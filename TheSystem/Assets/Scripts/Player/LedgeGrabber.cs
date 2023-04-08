@@ -38,7 +38,7 @@ public class LedgeGrabber : MonoBehaviour
         {
             ledgeChecker.transform.position = new Vector3(player.transform.position.x + 0.8f, ledgeChecker.transform.position.y, ledgeChecker.transform.position.z);
         }
-        else
+        else if(!player.FacingRight)
         {
             ledgeChecker.transform.position = new Vector3(player.transform.position.x - 0.8f, ledgeChecker.transform.position.y, ledgeChecker.transform.position.z);
         }
