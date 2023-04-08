@@ -51,6 +51,7 @@ public class PlayerController : RaycastController
     //reference to the ledge grab script
     LedgeGrabber grabber;
 
+    [SerializeField] Canvas canvas;
     /// <summary>
     /// Get's the player's collision box and calculates the ray spacing for the raycasting
     /// </summary>
@@ -75,8 +76,11 @@ public class PlayerController : RaycastController
 
     public void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Escape) && inventoryManager)
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            canvas.gameObject.GetComponent<Canvas>().enabled = true;
+        }
+        if (Input.GetKeyDown(KeyCode.I) && inventoryManager)
         {
             if (!inventoryActive)
             {
