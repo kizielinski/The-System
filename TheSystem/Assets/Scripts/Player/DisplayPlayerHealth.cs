@@ -5,9 +5,9 @@ using UnityEngine;
 public class DisplayPlayerHealth : MonoBehaviour
 {
     // Start is called before the first frame update
-    Stack<GameObject> hearts;
+    public Stack<GameObject> hearts;
 
-    List<GameObject> heartsList;
+    public List<GameObject> heartsList;
  
     void Start()
     {
@@ -17,7 +17,10 @@ public class DisplayPlayerHealth : MonoBehaviour
 
         foreach(Transform transform in t)
         {
-            hearts.Push(transform.gameObject);
+            if(transform.name != "Crystals")
+            {
+                hearts.Push(transform.gameObject);
+            }
         }
     }
 

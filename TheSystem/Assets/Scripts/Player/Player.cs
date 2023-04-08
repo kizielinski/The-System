@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -90,7 +91,14 @@ public class Player : MonoBehaviour
 
         if(dph == null)
         {
-            Debug.LogWarning("Make sure to assign the UI Health to player!");
+            try
+            {
+               dph = GameObject.Find("Crystals").GetComponent<DisplayPlayerHealth>();
+            }
+            catch
+            {
+                Debug.LogWarning("Make sure to assign the UI Health to player!");
+            }
         }
 
         //gets the script

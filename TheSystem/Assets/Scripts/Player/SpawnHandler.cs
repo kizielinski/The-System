@@ -6,14 +6,16 @@ using System.Threading;
 using UnityEngine;
 
 public class SpawnHandler : MonoBehaviour
-{
+{    
+    public static SpawnHandler instance;
     //Required list of spawnPoints (min one)
     [Tooltip ("You need to manually populate this field.")]
     [SerializeField] List<Campfire> spawnPoints;
+
+    [Tooltip("Enable loading which spawnPoint is active from SaveFile")]
     [SerializeField] bool useSaveFile;
     Campfire spawnCampfire;
     private Vector3 spawnPoint;
-    public static SpawnHandler instance;
     private SaveData saveData;
 
     public Vector3 SpawnPoint
@@ -22,6 +24,7 @@ public class SpawnHandler : MonoBehaviour
         { return spawnPoint; }
     }
 
+    //Extendible struct for handling all necessary SaveData
     private struct SaveData
     {
         public Dictionary<int, bool> saveRoomData;
@@ -33,6 +36,7 @@ public class SpawnHandler : MonoBehaviour
 
         int iterator = 0;
 
+        //Assign all spawnpoints a unique value 
         foreach (Campfire c in spawnPoints)
         {
             c.SavePointID = iterator;
@@ -43,6 +47,7 @@ public class SpawnHandler : MonoBehaviour
         if (instance == null)
         { instance = this; }
 
+        //Throw an error if this tool isn't utilized correctly
         if (spawnPoints == null || spawnPoints.Count < 1)
         {
             throw new System.Exception("There are no player spawnpoints loaded. Please load player spawnpoints");
@@ -79,6 +84,11 @@ public class SpawnHandler : MonoBehaviour
         spawnPoint = spawnPos;
     }
 
+    /// <summary>
+    /// Takes in an active spawn ID
+    /// Writes saveData to file, currently only ID location of current campfire.
+    /// </summary>
+    /// <param name="ID"></param>
     public void SaveGame(int ID)
     {
         spawnCampfire.IsActiveSavePoint = false;
@@ -111,6 +121,9 @@ public class SpawnHandler : MonoBehaviour
         Debug.LogWarning("Saving complete...");
     }
 
+    /// <summary>
+    /// Loads binary file of saveData at game start
+    /// </summary>
     public void LoadData()
     {
         Debug.LogWarning("Loading data...");
@@ -146,6 +159,9 @@ public class SpawnHandler : MonoBehaviour
         Debug.LogWarning("Loading complete...");
     }
 
+    /// <summary>
+    /// If player dies, this method is called and respawns the player
+    /// </summary>
     public void RespawnPlayer()
     {
         Vector3 newPos = spawnCampfire.transform.position;

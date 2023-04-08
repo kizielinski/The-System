@@ -4518,7 +4518,7 @@ GameObject:
   - component: {fileID: 4358451599226188249}
   - component: {fileID: 2281615878353107199}
   - component: {fileID: 6424171514181639664}
-  - component: {fileID: 8629805433919211354}
+  - component: {fileID: 4564618460174674155}
   m_Layer: 5
   m_Name: Crystals
   m_TagString: Untagged
@@ -4586,7 +4586,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8629805433919211354
+--- !u!114 &4564618460174674155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4598,6 +4598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d3faab757c5b94da5d15b31111fe90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heartsList: []
 --- !u!1 &9140578208220955819
 GameObject:
   m_ObjectHideFlags: 0
