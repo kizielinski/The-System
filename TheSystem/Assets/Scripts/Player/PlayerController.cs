@@ -52,6 +52,7 @@ public class PlayerController : RaycastController
     LedgeGrabber grabber;
 
     [SerializeField] Canvas canvas;
+    public bool paused;
     /// <summary>
     /// Get's the player's collision box and calculates the ray spacing for the raycasting
     /// </summary>
@@ -60,6 +61,7 @@ public class PlayerController : RaycastController
         base.Start();
 
         canvas.gameObject.GetComponent<Canvas>().enabled = false;
+        paused = false;
 
         grabber = GetComponent<LedgeGrabber>();
 
@@ -78,33 +80,41 @@ public class PlayerController : RaycastController
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            canvas.gameObject.GetComponent<Canvas>().enabled = true;
-        }
-        if (Input.GetKeyDown(KeyCode.I) && inventoryManager)
-        {
-            if (!inventoryActive)
-            {
-                inventoryManager.ShowInventory();
-                inventoryActive = !inventoryActive;
-            }
-            else
-            {
-                inventoryManager.HideInventory();
-                inventoryActive = !inventoryActive;
-            }
-
+            paused = !paused;
         }
 
-        above = collisions.above;
-        below = collisions.below;
-        left = collisions.left;
-        right = collisions.right;
-        climbingSlope = collisions.climbingSlope;
-        descendingSlope = collisions.descendingSlope;
-        spacePressed = Input.GetKey("space");
-        grabbingLedge = grabber.IsGrabbingLedge;
+        canvas.gameObject.GetComponent<Canvas>().enabled = paused;
+
+        if (!paused)
+        {
+            
+            if (Input.GetKeyDown(KeyCode.I) && inventoryManager)
+            {
+                if (!inventoryActive)
+                {
+                    inventoryManager.ShowInventory();
+                    inventoryActive = !inventoryActive;
+                }
+                else
+                {
+                    inventoryManager.HideInventory();
+                    inventoryActive = !inventoryActive;
+                }
+
+            }
+
+            above = collisions.above;
+            below = collisions.below;
+            left = collisions.left;
+            right = collisions.right;
+            climbingSlope = collisions.climbingSlope;
+            descendingSlope = collisions.descendingSlope;
+            spacePressed = Input.GetKey("space");
+            grabbingLedge = grabber.IsGrabbingLedge;
+        }
+        
     }
 
     /// <summary>

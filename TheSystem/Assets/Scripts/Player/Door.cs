@@ -25,6 +25,8 @@ public class Door : MonoBehaviour
     bool openingDoor;
     bool doorIsOpen;
 
+    [SerializeField] SpriteRenderer doorSprite;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,12 +39,23 @@ public class Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        //if the player is within the box collider to activate the door and they press E
-        if (PointInBoxCollider(player.transform.position, triggerBox) && Input.GetKeyDown(KeyCode.E))
+        //if the player is within the box collider to activate the door
+        if (PointInBoxCollider(player.transform.position, triggerBox))
         {
-            //and if the player is not too close to the door collider itself then open the door
-            if((player.transform.position.x > thisBox.transform.position.x + distanceTriggerable) || (player.transform.position.x < thisBox.transform.position.x - distanceTriggerable))
-            openingDoor = true;
+            //door changes color to show it
+            doorSprite.color = new Color(.4f, .4f, .4f);
+
+            // and they press W
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                //and if the player is not too close to the door collider itself then open the door
+                if ((player.transform.position.x > thisBox.transform.position.x + distanceTriggerable) || (player.transform.position.x < thisBox.transform.position.x - distanceTriggerable))
+                    openingDoor = true;
+            }
+        }
+        else
+        {
+            doorSprite.color = new Color(.15f, .15f, .15f);
         }
 
         //if the door is being opened/closed

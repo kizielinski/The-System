@@ -8,10 +8,10 @@ public class PauseMenu : MonoBehaviour
     //public static 
     [SerializeField] string scenePath;
 
+    public PlayerController player;
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void Quit()
@@ -23,6 +23,6 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         //disables the pause menu
-        gameObject.GetComponent<Canvas>().enabled = false;
+        player.paused = false;
     }
 }

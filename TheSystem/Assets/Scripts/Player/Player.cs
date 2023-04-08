@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
         get { return isFacingRight; }
     }
 
+    public bool paused;
 
     //velocity getter/setter
     public Vector3 Velocity
@@ -107,56 +108,59 @@ public class Player : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-
-        // Gets the current player axis input
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-        // Checks if the player can perform a jump
-        if (controller.spacePressed && controller.collisions.below
-            || (controller.spacePressed && slider.IsWallSliding && slider.ResetJump)
-            || (controller.spacePressed && controller.grabbingLedge))
+        if(!controller.paused)
         {
-            velocity.y = jumpVelocity;
-            Debug.LogWarning("Jumping");
-        }
+            // Gets the current player axis input
+            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        // Smooths out horizontal movement
-        float targetVelocityX = input.x * moveSpeed;
-        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+            // Checks if the player can perform a jump
+            if (controller.spacePressed && controller.collisions.below
+                || (controller.spacePressed && slider.IsWallSliding && slider.ResetJump)
+                || (controller.spacePressed && controller.grabbingLedge))
+            {
+                velocity.y = jumpVelocity;
+                Debug.LogWarning("Jumping");
+            }
 
-        // Updates the player's velocity
+            // Smooths out horizontal movement
+            float targetVelocityX = input.x * moveSpeed;
+            velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
-        //if the player is wall sliding
-        if (slider.IsWallSliding)
-        {
-            //fall at fixed velocity
-            velocity.y = (gravity * 4) * Time.deltaTime;
-        }
-        //otherwise if the player is not grabbing a ledge
-        else if (!controller.grabbingLedge)
-        {
-            //fall normally
-            velocity.y += gravity * Time.deltaTime;
-        }
+            // Updates the player's velocity
 
-        // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
-        if ((controller.collisions.above || controller.collisions.below || controller.grabbingLedge) && !controller.spacePressed)
-        {
-            velocity.y = 0;
-            //Debug.LogWarning("Stopped");
-        }
+            //if the player is wall sliding
+            if (slider.IsWallSliding)
+            {
+                //fall at fixed velocity
+                velocity.y = (gravity * 4) * Time.deltaTime;
+            }
+            //otherwise if the player is not grabbing a ledge
+            else if (!controller.grabbingLedge)
+            {
+                //fall normally
+                velocity.y += gravity * Time.deltaTime;
+            }
 
-        controller.Move(velocity * Time.deltaTime);
+            // Resets the vertical velocity if the player touches a ceiling or floor or is grabbing a ledge
+            if ((controller.collisions.above || controller.collisions.below || controller.grabbingLedge) && !controller.spacePressed)
+            {
+                velocity.y = 0;
+                //Debug.LogWarning("Stopped");
+            }
 
-        //we live in a society
-        if (velocity.x < -0.05)
-        {
-            isFacingRight = false;
+            controller.Move(velocity * Time.deltaTime);
+
+            //we live in a society
+            if (velocity.x < -0.05)
+            {
+                isFacingRight = false;
+            }
+            else if (velocity.x > 0.05)
+            {
+                isFacingRight = true;
+            }
         }
-        else if (velocity.x > 0.05)
-        {
-            isFacingRight = true;
-        }
+        
     }
 
 

@@ -26,6 +26,7 @@ public class PlayerWeapons : MonoBehaviour
     [SerializeField] private bool canAttack = true;
     private bool isAttacking = false;
 
+    [SerializeField] PlayerController player;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,16 +36,20 @@ public class PlayerWeapons : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canAttack)
+        if(!player.paused)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (canAttack)
             {
-                //Debug.LogWarning("Swing One");
-                canAttack = false;
-                StopCoroutine(AttackCooldown());
-                StartCoroutine(Attack());
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    //Debug.LogWarning("Swing One");
+                    canAttack = false;
+                    StopCoroutine(AttackCooldown());
+                    StartCoroutine(Attack());
+                }
             }
         }
+        
     }
 
     //Handles Scrapper attacks, needs to be refined visually but works really well.
