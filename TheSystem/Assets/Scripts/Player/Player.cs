@@ -86,7 +86,14 @@ public class Player : MonoBehaviour
 
         if(inventoryManager == null && inventoryActive)
         {
-            inventoryManager = GameObject.FindGameObjectWithTag("inventory").GetComponent<InventoryManager>();
+            try
+            {
+                inventoryManager = GameObject.FindGameObjectWithTag("inventory").GetComponent<InventoryManager>();
+            }
+            catch
+            {
+                Debug.LogError("Couldn't Find Inventory");
+            }
         }
 
         if(dph == null)
@@ -222,7 +229,7 @@ public class Player : MonoBehaviour
     public void PlayerTakeDamage(float damageVector, float damage)
     {
         //Knockback stuff
-        if(!isDamaged && !playerInvincible)
+        if(!isDamaged && playerInvincible)
         {
             Debug.LogWarning("Damage player this way: " + damageVector);
             StartCoroutine(PlayerKnockback(damageVector, damage));
