@@ -8,6 +8,9 @@ public class PlayerWeapons : MonoBehaviour
 {
     [SerializeField] private GameObject weaponParent;
     private Collider2D weaponHitBox;
+
+    //Attack speed for each individual Attack
+    [Tooltip ("Adjust values accordingly, each attack will happen at the speed set by their respective value")]
     [SerializeField] private float attackDuration_1 = 1.0f;
     [SerializeField] private float attackDuration_2 = 1.0f;
     [SerializeField] private float attackDuration_3 = 1.0f;
@@ -15,13 +18,13 @@ public class PlayerWeapons : MonoBehaviour
     [Tooltip("Attack Speed Multiplier. Starts at 1.0. Do not set below 0")]
     [SerializeField] private float attackSpeedMultiplier = 5.0f; //Default one
 
+
     [SerializeField] private float attackCooldown = 3.0f;
     [SerializeField] private float attackCooldownTimer = 0;
     private bool attackCooldownFinished;
-    private static bool facingRight = true;
+
     [SerializeField] private bool canAttack = true;
     private bool isAttacking = false;
-    //SerializeField] private int instancesOfAttack = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -57,7 +60,6 @@ public class PlayerWeapons : MonoBehaviour
             StopCoroutine(Attack());
         }
         canAttack = false;
-        //canMove = false;
         isAttacking = true;
         bool firstAttack = true;
         bool secondAttack = false;
@@ -187,6 +189,13 @@ public class PlayerWeapons : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Overrides parent method for AttackCooldown
+    /// Handles player attacks and ensures Attack()
+    /// is no longer running on another thread. Otherwise
+    /// there would be player action collisions which is undesirable.
+    /// </summary>
+    /// <returns></returns>
     protected virtual IEnumerator AttackCooldown()
     {
         StopCoroutine(Attack());
