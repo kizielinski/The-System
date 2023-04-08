@@ -8,6 +8,7 @@ using UnityEngine;
 public class SpawnHandler : MonoBehaviour
 {
     //Required list of spawnPoints (min one)
+    [Tooltip ("You need to manually populate this field.")]
     [SerializeField] List<Campfire> spawnPoints;
     [SerializeField] bool useSaveFile;
     Campfire spawnCampfire;
@@ -42,7 +43,7 @@ public class SpawnHandler : MonoBehaviour
         if (instance == null)
         { instance = this; }
 
-        if (spawnPoints == null)
+        if (spawnPoints == null || spawnPoints.Count < 1)
         {
             throw new System.Exception("There are no player spawnpoints loaded. Please load player spawnpoints");
         }
@@ -73,7 +74,9 @@ public class SpawnHandler : MonoBehaviour
             }
         }
 
-        spawnPoint = spawnCampfire.transform.position;
+        Vector3 spawnPos = spawnCampfire.transform.position;
+        spawnPos.z = 0.0f; //Zero out Z value to prevent animation errors
+        spawnPoint = spawnPos;
     }
 
     public void SaveGame(int ID)
@@ -145,6 +148,8 @@ public class SpawnHandler : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        Player.instance.transform.position = spawnCampfire.transform.position;
+        Vector3 newPos = spawnCampfire.transform.position;
+        newPos.z = 0.0f;
+        Player.instance.transform.position = newPos;
     }
 }
