@@ -59,6 +59,8 @@ public class PlayerController : RaycastController
     {
         base.Start();
 
+        canvas.gameObject.GetComponent<Canvas>().enabled = false;
+
         grabber = GetComponent<LedgeGrabber>();
 
         if (inventoryManager == null && inventoryActive)
