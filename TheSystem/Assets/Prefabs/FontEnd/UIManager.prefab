@@ -968,11 +968,11 @@ GameObject:
   - component: {fileID: 6122402114543199335}
   m_Layer: 5
   m_Name: Inventory
-  m_TagString: Untagged
+  m_TagString: inventory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6122402114543199334
 Transform:
   m_ObjectHideFlags: 0

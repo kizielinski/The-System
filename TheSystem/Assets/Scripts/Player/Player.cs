@@ -21,8 +21,6 @@ public class Player : MonoBehaviour
     float jumpVelocity;
     [SerializeField] Vector3 velocity;
     float velocityXSmoothing;
-    private InventoryManager inventoryManager;
-    [SerializeField] private bool inventoryActive = false;
 
     //Player health
     [SerializeField] private int playerHealthPool = 3;
@@ -84,11 +82,6 @@ public class Player : MonoBehaviour
             transform.position = SpawnHandler.instance.SpawnPoint;
         }
 
-        if(inventoryManager == null && inventoryActive)
-        {
-            inventoryManager = GameObject.FindGameObjectWithTag("inventory").GetComponent<InventoryManager>();
-        }
-
         if(dph == null)
         {
             try
@@ -114,21 +107,6 @@ public class Player : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && inventoryManager)
-        {
-            if(!inventoryActive)
-            {
-                inventoryManager.ShowInventory();
-                inventoryActive = !inventoryActive;
-            }
-            else
-            {
-                inventoryManager.HideInventory();
-                inventoryActive = !inventoryActive;
-            }
-            
-        }
-
 
         // Gets the current player axis input
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -222,7 +200,7 @@ public class Player : MonoBehaviour
     public void PlayerTakeDamage(float damageVector, float damage)
     {
         //Knockback stuff
-        if(!isDamaged && !playerInvincible)
+        if(!isDamaged && playerInvincible)
         {
             Debug.LogWarning("Damage player this way: " + damageVector);
             StartCoroutine(PlayerKnockback(damageVector, damage));
