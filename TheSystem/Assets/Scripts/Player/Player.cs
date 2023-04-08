@@ -222,7 +222,7 @@ public class Player : MonoBehaviour
     public void PlayerTakeDamage(float damageVector, float damage)
     {
         //Knockback stuff
-        if(!isDamaged)
+        if(!isDamaged && !playerInvincible)
         {
             Debug.LogWarning("Damage player this way: " + damageVector);
             StartCoroutine(PlayerKnockback(damageVector, damage));
@@ -239,6 +239,7 @@ public class Player : MonoBehaviour
             if(playerHealthPool <= 0)
             {
                 SpawnHandler.instance.RespawnPlayer();
+                playerHealthPool = 3;
                 if(dph)
                 {
                     dph.UIRespawn();
