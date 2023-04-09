@@ -362,6 +362,10 @@ MonoBehaviour:
   invincibilityTime: 4
   isStunned: 0
   stunTime: 4
+  attackRange: 1.25
+  knockBackTime: 1
+  knockBackX: 30
+  knockBackY: 10
   shield: {fileID: 231560965945448777}
   isDashing: 0
   dashPos: {x: 0, y: 0, z: 0}

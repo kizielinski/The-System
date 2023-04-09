@@ -17,7 +17,7 @@ public class Enemy : Entity
     public bool facingRight;
     [SerializeField] public float walkSpeed;
     protected bool canMove;
-    protected float cosValue = 0;
+    protected float sinValue = 0;
     protected float stepValue = 0.5f;
 
 
@@ -106,11 +106,23 @@ public class Enemy : Entity
 
     protected void Patrol()
     {
-        pos = transform.position;
-        float walkValue = walkSpeed * Mathf.Cos(cosValue) * Time.deltaTime;
-        pos.x += walkValue;
-        cosValue += stepValue * Time.deltaTime;
-        facingRight = walkValue > 0;
+        if(canMove)
+        {
+            pos = transform.position;
+            sinValue += stepValue * Time.deltaTime;
+
+            if (sinValue > Mathf.PI)
+            { 
+                sinValue = 0;
+                TurnAround();
+            }
+
+            float walkValue = (facingRight ? 1 : -1) * walkSpeed * Mathf.Sin(sinValue) * Time.deltaTime;
+            pos.x += walkValue;
+
+            if(HitWall())
+            { TurnAround(); }
+        }
     }
 
     /// <summary>
@@ -122,14 +134,14 @@ public class Enemy : Entity
         RaycastHit2D hit;
         if (facingRight)
         {
-            hit = Physics2D.Raycast(collisionBox.bounds.center, Vector2.right, collisionBox.bounds.extents.x + .01f, platformLayerMask);
+            hit = Physics2D.Raycast(collisionBox.bounds.center, Vector2.right, collisionBox.bounds.extents.x * 1.2f, platformLayerMask);
         }
         else
         {
-            hit = Physics2D.Raycast(collisionBox.bounds.center, Vector2.left, collisionBox.bounds.extents.x + .01f, platformLayerMask);
+            hit = Physics2D.Raycast(collisionBox.bounds.center, Vector2.left, collisionBox.bounds.extents.x * 1.2f, platformLayerMask);
         }
         Color rayColor;
-        if (hit.collider != null)
+        if (hit.collider != null && hit.collider.name != "Player")
         {
             rayColor = Color.green;
         }
@@ -139,13 +151,19 @@ public class Enemy : Entity
         }
         if (facingRight)
         {
-            Debug.DrawRay(collisionBox.bounds.center, Vector2.right * (collisionBox.bounds.extents.x + .01f), rayColor);
+            Debug.DrawRay(collisionBox.bounds.center, Vector2.right * (collisionBox.bounds.extents.x * 1.2f), rayColor);
         }
         else
         {
-            Debug.DrawRay(collisionBox.bounds.center, Vector2.left * (collisionBox.bounds.extents.x + .01f), rayColor);
+            Debug.DrawRay(collisionBox.bounds.center, Vector2.left * (collisionBox.bounds.extents.x * 1.2f), rayColor);
         }
-        return hit.collider != null;
+
+        if(hit.collider != null) 
+        { 
+            if(hit.collider.name == "Player") { return false; }
+            return true; 
+        }
+        else { return false; }
     }
 
     /// <summary>
@@ -153,12 +171,7 @@ public class Enemy : Entity
     /// </summary>
     void TurnAround()
     {
-        if (facingRight)
-        {
-            facingRight = false;
-            return;
-        }
-        facingRight = true;
+        facingRight = !facingRight;
     }
 
     /// <summary>
@@ -299,6 +312,6 @@ public class Enemy : Entity
 
     public void SetCharacterOrientation(bool facingRight)
     {
-        cosValue = facingRight ? 0 : Mathf.PI / 2;
+        sinValue = facingRight ? 0 : Mathf.PI / 2;
     }
 }
