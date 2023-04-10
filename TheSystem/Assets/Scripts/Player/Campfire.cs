@@ -29,7 +29,7 @@ public class Campfire : MonoBehaviour
     {
         if(canSaveGame)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.W))
             {
                 SpawnHandler.instance.SaveGame(savePointID);
             }

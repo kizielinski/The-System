@@ -277,7 +277,7 @@ public class Enemy : Entity
                 break;
             case "weapon_0":
                 TakeDamage(1);
-                StartCoroutine(TakeKnockback());
+                //StartCoroutine(TakeKnockback());
                 break;
             case "weapon_0_stun":
 

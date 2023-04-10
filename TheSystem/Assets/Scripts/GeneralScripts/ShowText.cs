@@ -24,12 +24,12 @@ public class ShowText : MonoBehaviour
         if(PointInBoxCollider(player.transform.position, thisBox))
         {
             //the text fades in
-            thisMesh.color = new Color(255, 255, 255, thisMesh.color.a + Time.deltaTime);
+            thisMesh.color = new Color(255, 255, 255, thisMesh.color.a + Time.deltaTime * 1.5f);
         }
         else
         {
             //otherwise the text fades out
-            gameObject.GetComponent<TextMesh>().color = new Color(255, 255, 255, thisMesh.color.a - Time.deltaTime);
+            gameObject.GetComponent<TextMesh>().color = new Color(255, 255, 255, thisMesh.color.a - Time.deltaTime * 1.5f);
         }
     }
 
