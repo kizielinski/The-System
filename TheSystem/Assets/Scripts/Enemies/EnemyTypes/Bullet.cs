@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     {
         target = Utilities.GetTargetPlayer();
         Debug.LogWarning("Target Located at:" + target);
-        speed = 10;
+        speed = 100;
         target = Utilities.DirectionToTarget(target, transform.position);
     }
 
