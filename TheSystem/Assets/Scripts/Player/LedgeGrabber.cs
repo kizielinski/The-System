@@ -53,7 +53,7 @@ public class LedgeGrabber : MonoBehaviour
         //sets start position of the upper raycast
         upperCastStart = player.gameObject.transform.position       //gets the position of the player
             + new Vector3(Mathf.Sign(player.Velocity.x)             //calculates where the player is looking and puts the start on that side of the player
-            * player.gameObject.transform.localScale.x / 2, .52f);   //places the raycast start position at the top corner of the side the player is facing
+            * player.gameObject.transform.localScale.x / 2, .6f);   //places the raycast start position at the top corner of the side the player is facing
 
         //draws a raycast from the starting position to the end position and returns a boolean value if that raycast has hit a platform
         upperCastHit = Physics2D.Raycast(upperCastStart, Vector2.right * Mathf.Sign(player.Velocity.x), upperCastEnd, platformLayer);
@@ -64,7 +64,7 @@ public class LedgeGrabber : MonoBehaviour
         //sets the start position of the lower raycast
         lowerCastStart = player.gameObject.transform.position        //gets the position of the player
             + new Vector3(Mathf.Sign(player.Velocity.x)              //calculates where the player is looking and puts the start on that side of the player
-            * player.gameObject.transform.localScale.x / 2, .44f);    //places the raycast start position at the middle of the side the player is facing
+            * player.gameObject.transform.localScale.x / 2, .4f);    //places the raycast start position at the middle of the side the player is facing
 
         //draws a raycast from the starting position to the end position and returns a boolean value if that raycast has hit a platform
         lowerCastHit = Physics2D.Raycast(lowerCastStart, Vector2.right * Mathf.Sign(player.Velocity.x), lowerCastEnd, platformLayer);

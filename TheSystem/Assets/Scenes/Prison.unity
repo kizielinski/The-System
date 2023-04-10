@@ -3159,7 +3159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6122402115281455817, guid: 77d74195560c19e4ba83e77f4997e6df, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6122402115879680111, guid: 77d74195560c19e4ba83e77f4997e6df, type: 3}
       propertyPath: m_RootOrder
@@ -7084,11 +7084,11 @@ PrefabInstance:
     - target: {fileID: 8359103808961488710, guid: 60b67e2e62a13e646b54abee4e64467c, type: 3}
       propertyPath: spawnPoints.Array.data[0]
       value: 
-      objectReference: {fileID: 185418882}
+      objectReference: {fileID: 159370787}
     - target: {fileID: 8359103808961488710, guid: 60b67e2e62a13e646b54abee4e64467c, type: 3}
       propertyPath: spawnPoints.Array.data[1]
       value: 
-      objectReference: {fileID: 159370787}
+      objectReference: {fileID: 185418882}
     - target: {fileID: 8359103808961488710, guid: 60b67e2e62a13e646b54abee4e64467c, type: 3}
       propertyPath: spawnPoints.Array.data[2]
       value: 

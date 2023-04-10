@@ -2,7 +2,6 @@
 //2/10/2023
 //This script handles a FOV cone for player/enemies, will also be upgraded to allow more variability.
 using System.Collections.Generic;
-using UnityEditor.Build;
 using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
