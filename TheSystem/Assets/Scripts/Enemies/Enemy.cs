@@ -43,12 +43,21 @@ public class Enemy : Entity
     [SerializeField] protected float knockBackX = 30.0f;
     [SerializeField] protected float knockBackY = 10.0f;
 
+    //Debug
+    [SerializeField] protected SpriteRenderer debugSprite;
+    [SerializeField] protected Color debugSpriteOriginalColor;
+ 
     //Status
     protected bool isAlive;
 
     public void Start()
     {
-       
+        debugSprite = GetComponentInChildren<SpriteRenderer>();
+
+        if(debugSprite)
+        {
+            debugSpriteOriginalColor = debugSprite.color;
+        }
     }
 
     public void Update()
@@ -222,12 +231,28 @@ public class Enemy : Entity
     {
         float currentTimer = 0;
         isInvincible = true;
+
+        /*Temp Code*/
+        if(debugSprite)
+        {
+            debugSprite.color = Color.white;
+        }
+        /*Temp Code*/
+
         while (currentTimer < invincibilityTime)
         {
             currentTimer += Time.deltaTime;
             yield return null;
         }
         isInvincible = false;
+
+        /*Temp Code*/
+        if(debugSprite)
+        {
+            debugSprite.color = debugSpriteOriginalColor;
+        }
+        /*Temp Code*/
+
     }
 
     protected virtual IEnumerator Stunned()

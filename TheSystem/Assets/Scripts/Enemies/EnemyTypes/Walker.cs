@@ -12,6 +12,9 @@ public class Walker : Enemy
 
     void Start()
     {
+        debugSprite = GetComponent<SpriteRenderer>();
+        debugSpriteOriginalColor = debugSprite.color;
+
         //Default value for Enemy
         canTakeDamage = true;
         canMove = true;
