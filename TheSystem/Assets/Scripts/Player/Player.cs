@@ -28,6 +28,10 @@ public class Player : MonoBehaviour
     [SerializeField] private bool playerInvincible = false;
     [SerializeField] private float invincibilityTime = 2.0f;
 
+    //Debug
+    [SerializeField] protected SpriteRenderer debugSprite;
+    [SerializeField] protected Color debugSpriteOriginalColor;
+
     public bool IsDamaged
     {
         get { return isDamaged; }
@@ -237,11 +241,27 @@ public class Player : MonoBehaviour
     {
         float currentTimer = 0;
         playerInvincible = true;
+
+        /*Temp Code*/
+        if (debugSprite)
+        {
+            debugSprite.color = Color.gray;
+        }
+        /*Temp Code*/
+
         while (currentTimer < invincibilityTime)
         {
             currentTimer += Time.deltaTime;
             yield return null;
         }
+
+        /*Temp Code*/
+        if (debugSprite)
+        {
+            debugSprite.color = debugSpriteOriginalColor;
+        }
+        /*Temp Code*/
+
         playerInvincible = false;
     }
 }
