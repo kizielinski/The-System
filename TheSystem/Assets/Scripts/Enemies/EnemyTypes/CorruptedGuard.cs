@@ -20,7 +20,7 @@ public class CorruptedGuard : Enemy
         //Default value for Enemy
         canTakeDamage = true;
         canMove = true;
-        walkSpeed =5;
+        walkSpeed = 2;
         healthPool = 10;
         attackDuration = 2.5f;
         attackCooldown = 4.0f;
