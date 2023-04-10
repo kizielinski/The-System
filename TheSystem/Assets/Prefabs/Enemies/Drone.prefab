@@ -65,6 +65,13 @@ MonoBehaviour:
   invincibilityTime: 1
   isStunned: 0
   stunTime: 4
+  attackRange: 1.25
+  knockBackTime: 1
+  knockBackX: 30
+  knockBackY: 10
+  debugSprite: {fileID: 0}
+  debugSpriteOriginalColor: {r: 0, g: 0, b: 0, a: 0}
+  bulletSpeedValue: 1
 --- !u!1 &1541638946678309252
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 308993289474841204, guid: 930e07d2d2891754eb9363fdda493d5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 308993289474841204, guid: 930e07d2d2891754eb9363fdda493d5a, type: 3}
       propertyPath: m_LocalRotation.w

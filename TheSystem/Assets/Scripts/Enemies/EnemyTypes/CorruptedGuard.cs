@@ -53,6 +53,12 @@ public class CorruptedGuard : Enemy
         isThrowing = false;
         isAerial = true;
         isDashing = false;
+
+        if(debugSprite)
+        {
+            debugSpriteOriginalColor = debugSprite.color;
+        }
+        
     }
 
     // Update is called once per frame

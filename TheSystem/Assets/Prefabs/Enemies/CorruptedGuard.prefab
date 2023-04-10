@@ -154,7 +154,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: febf526cdf486c044b4b3ba6f941cc71, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4339623, g: 0.10030261, b: 0.18270628, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -366,9 +366,13 @@ MonoBehaviour:
   knockBackTime: 1
   knockBackX: 30
   knockBackY: 10
+  debugSprite: {fileID: 231560965656583403}
+  debugSpriteOriginalColor: {r: 0, g: 0, b: 0, a: 0}
   shield: {fileID: 231560965945448777}
+  throwBombDistance: 25
   isDashing: 0
   dashPos: {x: 0, y: 0, z: 0}
+  dashTime: 1
 --- !u!114 &231560966544261404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +388,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 192
+  viewDistance: 50
   collidersToIgnore:
   - {fileID: 231560965945448780}
   playerHit: 0

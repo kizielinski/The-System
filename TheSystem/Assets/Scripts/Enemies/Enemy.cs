@@ -52,12 +52,6 @@ public class Enemy : Entity
 
     public void Start()
     {
-        debugSprite = GetComponentInChildren<SpriteRenderer>();
-
-        if(debugSprite)
-        {
-            debugSpriteOriginalColor = debugSprite.color;
-        }
     }
 
     public void Update()
