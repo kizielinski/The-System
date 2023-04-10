@@ -4,6 +4,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Drone : Enemy
@@ -16,6 +17,9 @@ public class Drone : Enemy
     private Object bulletPrefab;
     private bool canFire;
     private float gunCooldown = 0.4f;
+
+    [Tooltip ("Adjusts speed of this drone's bullets. Default: 1.0f")]
+    [SerializeField] private float bulletSpeedValue = 1.0f;
 
     void Start()
     {
@@ -77,6 +81,7 @@ public class Drone : Enemy
         {
             canFire = false;
             bullets.Add(Instantiate(bulletPrefab, transform.position, transform.rotation) as GameObject);
+            bullets[bullets.Count -1].GetComponent<Bullet>().SetSpeed = bulletSpeedValue;
             yield return new WaitForSeconds(gunCooldown);
             canFire = true;
         }
