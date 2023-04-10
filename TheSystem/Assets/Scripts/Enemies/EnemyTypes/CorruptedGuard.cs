@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
@@ -10,8 +12,11 @@ public class CorruptedGuard : Enemy
     [SerializeField] private GameObject shield;
     private static Object prefab;
     private bool isThrowing;
+    [SerializeField] private float throwBombDistance = 25.0f;
     [SerializeField] private bool isDashing;
     [SerializeField] private Vector3 dashPos;
+    [SerializeField] private float dashTime = 1.0f;
+    private float currentDashTime = 0;
     private int throwAttackCooldown;
 
     // Start is called before the first frame update
@@ -98,13 +103,14 @@ public class CorruptedGuard : Enemy
 
     private IEnumerator ShieldBash()
     {
+        isInvincible = true;
+
         StopCoroutine("Attack");
 
         canAttack = false;
         fov.playerHit = false;
 
         Debug.LogError("Dash");
-        float currentTime = 0;
 
         if (!isDashing)
         {
@@ -120,11 +126,11 @@ public class CorruptedGuard : Enemy
             isDashing = true;
         }
 
-        while (Vector3.Distance(transform.position, dashPos) > 0.5f)
+        while (currentDashTime < dashTime )
         {
             velocity.x += (facingRight ? 1.0f : -1.0f) * 32.0f * Time.deltaTime;
             
-            currentTime += Time.deltaTime;
+            currentDashTime += Time.deltaTime;
             yield return null;
         }
 
@@ -133,9 +139,11 @@ public class CorruptedGuard : Enemy
         isDashing = false;
         fov.PlayerHitIsNow = false;
         attackCooldown = throwAttackCooldown * 2;
+        currentDashTime = 0;
+
+        isInvincible = false;
 
         StartCoroutine(AttackCooldown());
-
         ////If dash has reached its destination
         //Debug.LogError("Dash Distance: " + (Vector3.Distance(pos, dashPos)));
         //Debug.LogError("Is Dashing " + isDashing);
@@ -152,7 +160,7 @@ public class CorruptedGuard : Enemy
         canAttack = false;
 
         //If within fov distance throw bomb
-        if (distance > 25.0f)
+        if (distance > throwBombDistance)
         {
             Debug.LogError("Throw");
             ThrowProjectile();

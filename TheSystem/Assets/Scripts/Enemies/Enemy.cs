@@ -34,7 +34,7 @@ public class Enemy : Entity
     [SerializeField] protected bool canAttack = false; //Checks for no cooldown on attack
     protected float attackDamage; 
     protected float attackStatusEffect;
-    private bool isInvincible;
+    protected bool isInvincible;
     [SerializeField] protected float invincibilityTime = 1.0f;
     [SerializeField] protected bool isStunned = false;
     [SerializeField] protected float stunTime = 4.0f;
@@ -305,8 +305,15 @@ public class Enemy : Entity
     {
         if (collision.tag == "ground")
         {
-            isAerial = true;
-            acceleration.y = gravity;
+
+            float test = Utilities.DirectionToTarget(collision.transform.position + new Vector3(0, 0, collision.gameObject.GetComponent<Collider2D>().bounds.extents.y), transform.position).y;
+            Debug.LogWarning(test);
+
+            if(test > 0)
+            {
+                isAerial = true;
+                acceleration.y = gravity;
+            }
         }
     }
 
